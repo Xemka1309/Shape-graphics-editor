@@ -8,3 +8,13 @@ C:\Users\Макс\source\repos\MyPaint_FabricPattern\MyPaint_FabricPattern\bin\D
 C:\Users\Макс\source\repos\MyPaint_FabricPattern\MyPaint_FabricPattern\bin\Debug\MyPaint_FabricPattern.pdb
 C:\Users\Макс\source\repos\MyPaint_FabricPattern\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.exe
 C:\Users\Макс\source\repos\MyPaint_FabricPattern\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.pdb
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.csprojAssemblyReference.cache
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.MainForm.resources
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.Properties.Resources.resources
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.csproj.GenerateResource.cache
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.csproj.CoreCompileInputs.cache
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.exe
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.pdb
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\MyPaint_FabricPattern.exe.config
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\MyPaint_FabricPattern.exe
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\MyPaint_FabricPattern.pdb

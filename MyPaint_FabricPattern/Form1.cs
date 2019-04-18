@@ -14,14 +14,25 @@ namespace MyPaint_FabricPattern
 {
     public partial class MainForm : Form
     {
+        static public List<Shape> shape_list;
+        //static public PictureBox canvas;
+        static public Bitmap picture;
+        static public Bitmap buffpicture;
         static public Cursor cursor;
+        static public Graphics buffgraphics;
         static public  Graphics graphics;
         static public  Painter painter;    
         public MainForm()
         {
             InitializeComponent();
+            shape_list = new List<Shape>();
             painter = new Painter();
-            graphics = GB_canvas.CreateGraphics();
+            painter.currentpoint = new Point(0, 0);
+            picture = new Bitmap(680, 400);
+            buffpicture = new Bitmap(680, 400);
+            //graphics = pictureBox.CreateGraphics();
+            graphics = Graphics.FromImage(picture);
+            buffgraphics = Graphics.FromImage(buffpicture);
             
         }
 
@@ -192,7 +203,7 @@ namespace MyPaint_FabricPattern
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-           if (e.Button == MouseButtons.Left)
+          /* if (e.Button == MouseButtons.Left)
            {
                 painter.points[painter.pointsset] = e.Location;
                 painter.pointsset++;
@@ -208,15 +219,76 @@ namespace MyPaint_FabricPattern
                 }
                 if (painter.pointsneed == painter.pointsset)
                 {
-                    painter.Create();
+                    //painter.Create();
                 }
            }
-           
+           */
+        }
+
+        private void pictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point current = e.Location;
+            painter.currentpoint = current;
+            graphics = Graphics.FromImage(picture);
+            buffgraphics = Graphics.FromImage(buffpicture);
+            if (e.Button== MouseButtons.Left)
+            {
+                buffgraphics.Clear(Color.White);
+                painter.Paint(graphics, buffgraphics);
+                buffgraphics.DrawImage(picture, 0, 0);
+                pictureBox.Image = buffpicture;
+            }
+        }
+
+        private void pictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            painter.prevpoint = e.Location;
+        }
+
+        private void pictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            graphics = Graphics.FromImage(picture);
+            String id = painter.CurrentShapeToPaintID;
+            switch (id)
+            {
+                case "Triangle":
+                    {
+
+                        // buffg.Draw
+                        break;
+                    }
+                
+
+                case "Rectangle":
+                    graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                    shape_list.Add(painter.Create());
+                    break;
+                    
+                //
+
+                /*case "Square":
+                    LastShape = new Rectangle(pen.Width, pen.Color, points[0], ShapeWidth);
+                    break;
+                case "Line":
+                    LastShape = new Line(pen.Width, pen.Color, points[0], points[1]);
+                    break;
+                case "Ellipse":
+                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth, ShapeHeight);
+                    break;
+                case "Circuit":
+                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth);
+                    break;
+                case "Quadrilateral":
+                    LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                    break;*/
+            }
         }
     }
 
     public class Painter
     {
+        public Point prevpoint;
+        public Point currentpoint;
         public int pointsneed;
         public int pointsset;
         public PointF startpoint, endpoint;
@@ -293,6 +365,71 @@ namespace MyPaint_FabricPattern
             SelectedButton = button;
             SelectedButton.BackColor = Color.OrangeRed;
         }
+        public void Paint(Graphics g, Graphics buffg)
+        {
+            
+            this.points[0] = prevpoint;
+            this.points[1] = currentpoint;
+            ShapeWidth = points[0].X - points[1].X;
+            ShapeHeight = points[1].Y - points[0].Y;
+            if (points[0].X > points[1].X)
+            {
+                //PointF buff = points[0];
+                //points[0] = points[1];
+                //points[1] = buff;
+                ShapeWidth = points[0].X - points[1].X;
+            }
+            else
+            {
+                ShapeWidth = points[1].X - points[0].X;
+            }
+            
+            if (points[1].Y > points[0].Y)
+            {
+                ShapeHeight = points[1].Y - points[0].Y;
+                //float buff = points[0].Y;
+                //points[0].Y = points[1].Y;
+                //points[1].Y = buff;
+            }
+            else
+            {
+                ShapeHeight = points[0].X - points[1].X;
+            }
+            String id = CurrentShapeToPaintID;
+            switch (id)
+            {
+                case "Triangle":
+                    {
+
+                       // buffg.Draw
+                        break;
+                    }
+                    //LastShape = new Triangle(pen.Width, pen.Color, points);
+                   
+                case "Rectangle":     
+                    buffg.DrawRectangle(pen, points[0].X,points[0].Y, ShapeWidth, ShapeHeight);
+                    break;
+                case "Square":
+                    buffg.DrawRectangle(pen, points[0].X, points[0].Y, ShapeWidth, ShapeWidth);
+                    break;
+                case "Line":
+                    LastShape = new Line(pen.Width, pen.Color, points[0], points[1]);
+                    break;
+                case "Ellipse":
+                    buffg.DrawEllipse(pen,points[0].X,points[0].Y, ShapeWidth, ShapeHeight);
+                    break;
+                case "Circuit":
+                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth);
+                    break;
+                case "Quadrilateral":
+                    LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                    break;
+            }
+            
+
+           
+            //return LastShape;
+        }
         public Shape Create()
         {
             String id = CurrentShapeToPaintID;
@@ -321,6 +458,7 @@ namespace MyPaint_FabricPattern
                     break;
             }
             return LastShape;
+
         }
         // считывает положение курсора и возвращает координату
         public PointF GetCursor()

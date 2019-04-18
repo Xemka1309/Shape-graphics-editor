@@ -81,9 +81,9 @@ namespace MyPaint_FabricPattern
 
         public void Paint()
         {
-            MainForm.painter.SaveGraphicsState();
-            MainForm.graphics.DrawRectangle(MainForm.painter.pen, points[0].X, points[0].Y, width, height);
-            MainForm.painter.LastShape = this;
+            //MainForm.painter.SaveGraphicsState();
+            //MainForm.buffgraphics.DrawRectangle(MainForm.painter.pen, points[0].X, points[0].Y, width, height);
+           // MainForm.painter.LastShape = this;
         }
     }
     class Ellipse : Shape, IShapeManipulator

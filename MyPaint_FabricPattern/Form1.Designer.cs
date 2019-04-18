@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.GB_canvas = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.Button_test = new System.Windows.Forms.Button();
             this.label_canvas = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,46 +73,11 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.GB_canvas.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // GB_canvas
-            // 
-            this.GB_canvas.Controls.Add(this.pictureBox1);
-            this.GB_canvas.Controls.Add(this.Button_test);
-            this.GB_canvas.Location = new System.Drawing.Point(14, 51);
-            this.GB_canvas.Name = "GB_canvas";
-            this.GB_canvas.Size = new System.Drawing.Size(782, 362);
-            this.GB_canvas.TabIndex = 0;
-            this.GB_canvas.TabStop = false;
-            this.GB_canvas.CursorChanged += new System.EventHandler(this.GB_canvas_CursorChanged);
-            this.GB_canvas.LocationChanged += new System.EventHandler(this.GB_canvas_LocationChanged);
-            this.GB_canvas.DragDrop += new System.Windows.Forms.DragEventHandler(this.GB_canvas_DragDrop);
-            this.GB_canvas.Enter += new System.EventHandler(this.GB_canvas_Enter);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(-6, 15);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(782, 347);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.CursorChanged += new System.EventHandler(this.pictureBox1_CursorChanged);
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
-            // 
-            // Button_test
-            // 
-            this.Button_test.Location = new System.Drawing.Point(515, 74);
-            this.Button_test.Name = "Button_test";
-            this.Button_test.Size = new System.Drawing.Size(75, 23);
-            this.Button_test.TabIndex = 1;
-            this.Button_test.Text = "button1";
-            this.Button_test.UseVisualStyleBackColor = true;
-            this.Button_test.Click += new System.EventHandler(this.Button_test_Click);
             // 
             // label_canvas
             // 
@@ -135,7 +97,7 @@
             this.penToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(932, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -306,7 +268,7 @@
             this.toolStripSeparator9});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(932, 39);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -476,34 +438,41 @@
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(6, 39);
             // 
+            // pictureBox
+            // 
+            this.pictureBox.Location = new System.Drawing.Point(12, 78);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(680, 400);
+            this.pictureBox.TabIndex = 5;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDown);
+            this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
+            this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseUp);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(932, 490);
+            this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label_canvas);
-            this.Controls.Add(this.GB_canvas);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "MyPaint";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.GB_canvas.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox GB_canvas;
-        private System.Windows.Forms.Button Button_test;
         private System.Windows.Forms.Label label_canvas;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -548,7 +517,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripButton toolStripButtonQuadrilateral;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        public System.Windows.Forms.PictureBox pictureBox;
     }
 }
 
