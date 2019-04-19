@@ -8,10 +8,7 @@ using System.Drawing;
 
 namespace MyPaint_FabricPattern
 {
-    public class ShapeCreator
-    {
-        Shape shape;
-    }
+    
     
         
     public class Shape
@@ -45,7 +42,7 @@ namespace MyPaint_FabricPattern
         }
         public void Paint()
         {
-            MainForm.painter.SaveGraphicsState();
+            //MainForm.painter.SaveGraphicsState();
             MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[0], this.points[1]);
             MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[1], this.points[2]);
             MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[2], this.points[0]);
@@ -112,7 +109,8 @@ namespace MyPaint_FabricPattern
         }
         public void Paint()
         {
-            MainForm.painter.SaveGraphicsState();
+            
+            //MainForm.painter.SaveGraphicsState();
             MainForm.graphics.DrawEllipse(MainForm.painter.pen, points[0].X, points[0].Y, width, height);
             MainForm.painter.LastShape = this;
         }
@@ -130,7 +128,7 @@ namespace MyPaint_FabricPattern
         }
         public void Paint()
         {
-            MainForm.painter.SaveGraphicsState();
+            //MainForm.painter.SaveGraphicsState();
             MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[0], this.points[1]);
             MainForm.painter.LastShape = this;
         }
@@ -151,7 +149,7 @@ namespace MyPaint_FabricPattern
         }
         public void Paint()
         {
-            MainForm.painter.SaveGraphicsState();
+           // MainForm.painter.SaveGraphicsState();
             MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[0], this.points[1]);
             MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[1], this.points[2]);
             MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[2], this.points[3]);

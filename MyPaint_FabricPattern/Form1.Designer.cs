@@ -74,6 +74,7 @@
             this.toolStripButtonRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -224,6 +225,7 @@
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
             this.colorToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.colorToolStripMenuItem.Text = "Color";
+            this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
             // 
             // outlinewidthToolStripMenuItem
             // 
@@ -385,6 +387,7 @@
             this.toolStripButtonColor.Name = "toolStripButtonColor";
             this.toolStripButtonColor.Size = new System.Drawing.Size(36, 36);
             this.toolStripButtonColor.Text = "Change color";
+            this.toolStripButtonColor.Click += new System.EventHandler(this.toolStripButtonColor_Click);
             // 
             // toolStripSeparator2
             // 
@@ -401,6 +404,7 @@
             // 
             this.toolStripTextBoxWidth.Name = "toolStripTextBoxWidth";
             this.toolStripTextBoxWidth.Size = new System.Drawing.Size(50, 39);
+            this.toolStripTextBoxWidth.Text = "3";
             this.toolStripTextBoxWidth.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
             // 
             // toolStripSeparator3
@@ -518,6 +522,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonQuadrilateral;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         public System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.ColorDialog colorDialog;
     }
 }
 

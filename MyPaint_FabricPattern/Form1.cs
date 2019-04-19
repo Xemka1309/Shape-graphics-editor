@@ -16,6 +16,9 @@ namespace MyPaint_FabricPattern
     {
         static public List<Shape> shape_list;
         //static public PictureBox canvas;
+        static public GraphicsState prevgstate, nextgstate;
+        static public Image prevpic, nextpic;
+        static public Bitmap prevmap, nextmap;
         static public Bitmap picture;
         static public Bitmap buffpicture;
         static public Cursor cursor;
@@ -25,15 +28,29 @@ namespace MyPaint_FabricPattern
         public MainForm()
         {
             InitializeComponent();
+            colorDialog.Color = Color.Black;
+            
+
+
             shape_list = new List<Shape>();
             painter = new Painter();
+            painter.SetWidth(3);
             painter.currentpoint = new Point(0, 0);
             picture = new Bitmap(680, 400);
             buffpicture = new Bitmap(680, 400);
             //graphics = pictureBox.CreateGraphics();
             graphics = Graphics.FromImage(picture);
             buffgraphics = Graphics.FromImage(buffpicture);
+            prevgstate = nextgstate = graphics.Save();
             
+        }
+
+        public void SaveGraphicsState()
+        {
+          prevmap = picture;
+          prevgstate = graphics.Save();
+          if (pictureBox.Image!=null)
+            prevpic = (Image)pictureBox.Image.Clone();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -62,7 +79,7 @@ namespace MyPaint_FabricPattern
             Quadrilateral quadrilateral = new Quadrilateral(100, Color.DarkOrange, points);
            
         }
-
+        
         private void rectangleToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -95,22 +112,77 @@ namespace MyPaint_FabricPattern
 
         private void toolStripButtonUndo_Click(object sender, EventArgs e)
         {
-           painter.Undo();
+            try
+            {
+                nextpic = (Image)pictureBox.Image.Clone();
+                nextgstate = graphics.Save();
+                if (prevpic != null)
+                   // picture = new Bitmap(prevpic);
+                pictureBox.Image = prevpic;
+                //ImageFormatConverter imageFormatConverter = new ImageFormatConverter;
+                picture = (Bitmap)pictureBox.Image;
+                
+
+
+            }
+            catch
+            {
+                // if (nextgraphicsState != null)
+                //     nextgraphicsState = buffstate;
+               // MessageBox.Show("No previous state saved");
+            }
+            finally
+            {
+                //MessageBox.Show("Done");
+            }
         }
 
         private void toolStripButtonRedo_Click(object sender, EventArgs e)
         {
-            painter.Redo();
+            try
+            {
+                prevgstate = graphics.Save();
+                graphics.Restore(nextgstate);
+            }
+            catch
+            {
+                //   prevgraphicsState = buffstate;
+                MessageBox.Show("No next state saved");
+            }
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            painter.Undo();
+            try
+            {
+                nextgstate = graphics.Save();
+                graphics.Restore(prevgstate);
+
+            }
+            catch
+            {
+                // if (nextgraphicsState != null)
+                //     nextgraphicsState = buffstate;
+                MessageBox.Show("No previous state saved");
+            }
+            finally
+            {
+                //MessageBox.Show("Done");
+            }
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            painter.Redo();
+            try
+            {
+                prevgstate = graphics.Save();
+                graphics.Restore(nextgstate);
+            }
+            catch
+            {
+                //   prevgraphicsState = buffstate;
+                MessageBox.Show("No next state saved");
+            }
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -170,26 +242,6 @@ namespace MyPaint_FabricPattern
             painter.SelectButton(this.toolStripButtonQuadrilateral);
         }
 
-        private void GB_canvas_DragDrop(object sender, DragEventArgs e)
-        {
-           
-        }
-
-        private void GB_canvas_LocationChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void GB_canvas_CursorChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void GB_canvas_Enter(object sender, EventArgs e)
-        {
-            //MessageBox.Show("slava hohlam");
-        }
-
         private void pictureBox1_Click(object sender, EventArgs e)
         {
            // painter.points[0] = painter.GetCursor();
@@ -242,61 +294,82 @@ namespace MyPaint_FabricPattern
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
+            SaveGraphicsState();
             painter.prevpoint = e.Location;
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
+            
             graphics = Graphics.FromImage(picture);
+            
             String id = painter.CurrentShapeToPaintID;
             switch (id)
             {
                 case "Triangle":
-                    {
-
-                        // buffg.Draw
-                        break;
-                    }
-                
-
+                    PointF p = new PointF();
+                    p.X = painter.points[1].X + painter.ShapeWidth * 2;
+                    p.Y = painter.points[1].Y;
+                    graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                    graphics.DrawLine(painter.pen, painter.points[1], p);
+                    graphics.DrawLine(painter.pen, p, painter.points[0]);
+                    shape_list.Add(painter.Create());
+                    break;
+                    
                 case "Rectangle":
                     graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
                     shape_list.Add(painter.Create());
                     break;
-                    
-                //
+                case "Square":
+                    graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                    shape_list.Add(painter.Create());
+                    break;
 
-                /*case "Square":
-                    LastShape = new Rectangle(pen.Width, pen.Color, points[0], ShapeWidth);
-                    break;
                 case "Line":
-                    LastShape = new Line(pen.Width, pen.Color, points[0], points[1]);
+                    graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                    shape_list.Add(painter.Create());
                     break;
+
                 case "Ellipse":
-                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth, ShapeHeight);
+                   graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
                     break;
+
                 case "Circuit":
-                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth);
+                    graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
                     break;
+
                 case "Quadrilateral":
-                    LastShape = new Quadrilateral(pen.Width, pen.Color, points);
-                    break;*/
+                    //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                    break;
             }
+        }
+
+        private void toolStripButtonColor_Click(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            painter.SetColor(colorDialog.Color);
+        }
+
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            painter.SetColor(colorDialog.Color);
         }
     }
 
     public class Painter
     {
+       
         public Point prevpoint;
         public Point currentpoint;
         public int pointsneed;
         public int pointsset;
-        public PointF startpoint, endpoint;
+       // public PointF startpoint, endpoint;
         public float ShapeWidth, ShapeHeight;
         public ToolStripButton SelectedButton;
         public String CurrentShapeToPaintID;
-        public GraphicsState prevgraphicsState;
-        public GraphicsState nextgraphicsState;
+       // public GraphicsState prevgraphicsState;
+       // public GraphicsState nextgraphicsState;
         public Shape LastShape;
         public PointF[] points;
         public Pen pen;
@@ -304,6 +377,7 @@ namespace MyPaint_FabricPattern
         {
             pen = new Pen(Color.Black);
             points = new PointF[5];
+            
             
         }
         public void SetColor(Color color)
@@ -316,47 +390,9 @@ namespace MyPaint_FabricPattern
             this.pen.Width = width;
         }
 
-        public void SaveGraphicsState()
-        {
-            prevgraphicsState = MainForm.graphics.Save();
-        }
+       
 
-        public void Redo()
-        {
-            //GraphicsState buffstate = prevgraphicsState;
-            try
-            {
-                prevgraphicsState = MainForm.graphics.Save();
-                MainForm.graphics.Restore(nextgraphicsState);
-            }
-            catch
-            {
-             //   prevgraphicsState = buffstate;
-                MessageBox.Show("No next state saved");
-            }
-        }
-        public void Undo()
-        {
-           // GraphicsState buffstate;
-           // if (nextgraphicsState!=null)
-           //     buffstate = nextgraphicsState;
-            try
-            {
-               nextgraphicsState = MainForm.graphics.Save();
-               MainForm.graphics.Restore(prevgraphicsState);
-               
-            }
-            catch
-            {
-               // if (nextgraphicsState != null)
-               //     nextgraphicsState = buffstate;
-                MessageBox.Show("No previous state saved");
-            }
-            finally
-            {
-                MessageBox.Show("Done");
-            }
-        }
+       
         
         public void SelectButton(ToolStripButton button)
         {
@@ -399,13 +435,13 @@ namespace MyPaint_FabricPattern
             switch (id)
             {
                 case "Triangle":
-                    {
-
-                       // buffg.Draw
-                        break;
-                    }
-                    //LastShape = new Triangle(pen.Width, pen.Color, points);
-                   
+                    PointF p=new PointF();
+                    p.X = points[1].X + ShapeWidth*2;
+                    p.Y = points[1].Y;
+                    buffg.DrawLine(pen,points[0], points[1]);
+                    buffg.DrawLine(pen, points[1], p);
+                    buffg.DrawLine(pen, p, points[0]);
+                    break;
                 case "Rectangle":     
                     buffg.DrawRectangle(pen, points[0].X,points[0].Y, ShapeWidth, ShapeHeight);
                     break;
@@ -413,13 +449,13 @@ namespace MyPaint_FabricPattern
                     buffg.DrawRectangle(pen, points[0].X, points[0].Y, ShapeWidth, ShapeWidth);
                     break;
                 case "Line":
-                    LastShape = new Line(pen.Width, pen.Color, points[0], points[1]);
+                    buffg.DrawLine(pen, points[0], points[1]);
                     break;
                 case "Ellipse":
                     buffg.DrawEllipse(pen,points[0].X,points[0].Y, ShapeWidth, ShapeHeight);
                     break;
                 case "Circuit":
-                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth);
+                    buffg.DrawEllipse(pen, points[0].X, points[0].Y, ShapeWidth, ShapeWidth);
                     break;
                 case "Quadrilateral":
                     LastShape = new Quadrilateral(pen.Width, pen.Color, points);
@@ -436,6 +472,8 @@ namespace MyPaint_FabricPattern
             switch (id)
             {
                 case "Triangle":
+                    points[2].X = points[1].X + ShapeWidth * 2;
+                    points[2].Y = points[1].Y;
                     LastShape = new Triangle(pen.Width, pen.Color, points);
                     break;
                 case "Rectangle":
