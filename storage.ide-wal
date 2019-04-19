@@ -1,0 +1,65 @@
+[33mcommit afa56778103b59da5f61a4629fda374dc49d09f2[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Maxim.Makarevich <xemka1309@gmail.com>
+Date:   Fri Apr 19 10:30:01 2019 +0300
+
+    Fix bugs
+
+[1mdiff --git a/.vs/MyPaint_FabricPattern/v15/.suo b/.vs/MyPaint_FabricPattern/v15/.suo[m
+[1mindex 76ccde3..7935ef4 100644[m
+Binary files a/.vs/MyPaint_FabricPattern/v15/.suo and b/.vs/MyPaint_FabricPattern/v15/.suo differ
+[1mdiff --git a/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide b/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide[m
+[1mindex 1669b39..30d82de 100644[m
+Binary files a/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide and b/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide differ
+[1mdiff --git a/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-shm b/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-shm[m
+[1mindex e77bb54..e00935b 100644[m
+Binary files a/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-shm and b/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-shm differ
+[1mdiff --git a/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-wal b/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-wal[m
+[1mindex 89c871d..a82d75a 100644[m
+Binary files a/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-wal and b/.vs/MyPaint_FabricPattern/v15/Server/sqlite3/storage.ide-wal differ
+[1mdiff --git a/MyPaint_FabricPattern/Form1.Designer.cs b/MyPaint_FabricPattern/Form1.Designer.cs[m
+[1mindex 11431d8..320a4db 100644[m
+[1m--- a/MyPaint_FabricPattern/Form1.Designer.cs[m
+[1m+++ b/MyPaint_FabricPattern/Form1.Designer.cs[m
+[36m@@ -74,6 +74,7 @@[m
+             this.toolStripButtonRedo = new System.Windows.Forms.ToolStripButton();[m
+             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();[m
+             this.pictureBox = new System.Windows.Forms.PictureBox();[m
+[32m+[m[32m            this.colorDialog = new System.Windows.Forms.ColorDialog();[m
+             this.menuStrip1.SuspendLayout();[m
+             this.toolStrip1.SuspendLayout();[m
+             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();[m
+[36m@@ -224,6 +225,7 @@[m
+             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";[m
+             this.colorToolStripMenuItem.Size = new System.Drawing.Size(148, 22);[m
+             this.colorToolStripMenuItem.Text = "Color";[m
+[32m+[m[32m            this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);[m
+             // [m
+             // outlinewidthToolStripMenuItem[m
+             // [m
+[36m@@ -385,6 +387,7 @@[m
+             this.toolStripButtonColor.Name = "toolStripButtonColor";[m
+             this.toolStripButtonColor.Size = new System.Drawing.Size(36, 36);[m
+             this.toolStripButtonColor.Text = "Change color";[m
+[32m+[m[32m            this.toolStripButtonColor.Click += new System.EventHandler(this.toolStripButtonColor_Click);[m
+             // [m
+             // toolStripSeparator2[m
+             // [m
+[36m@@ -401,6 +404,7 @@[m
+             // [m
+             this.toolStripTextBoxWidth.Name = "toolStripTextBoxWidth";[m
+             this.toolStripTextBoxWidth.Size = new System.Drawing.Size(50, 39);[m
+[32m+[m[32m            this.toolStripTextBoxWidth.Text = "3";[m
+             this.toolStripTextBoxWidth.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);[m
+             // [m
+             // toolStripSeparator3[m
+[36m@@ -518,6 +522,7 @@[m
+         private System.Windows.Forms.ToolStripButton toolStripButtonQuadrilateral;[m
+         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;[m
+         public System.Windows.Forms.PictureBox pictureBox;[m
+[32m+[m[32m        private System.Windows.Forms.ColorDialog colorDialog;[m
+     }[m
+ }[m
+ [m
+[1mdiff --git a/MyPaint_FabricPattern/Form1.cs b/MyPaint_FabricPattern/Form1.cs[m
+[1mindex cf391ca..11ba109 100644[m
+[1m--- a/MyPaint_FabricPattern/Form1

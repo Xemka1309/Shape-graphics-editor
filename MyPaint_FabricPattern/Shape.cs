@@ -11,7 +11,7 @@ namespace MyPaint_FabricPattern
     
     
         
-    public class Shape
+    public abstract class Shape
     {
         public PointF[] points;
         public Color color;

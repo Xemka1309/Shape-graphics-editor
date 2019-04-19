@@ -14,6 +14,7 @@ namespace MyPaint_FabricPattern
 {
     public partial class MainForm : Form
     {
+        static public String nextshapeid;
         static public List<Shape> shape_list;
         //static public PictureBox canvas;
         static public GraphicsState prevgstate, nextgstate;
@@ -47,8 +48,8 @@ namespace MyPaint_FabricPattern
 
         public void SaveGraphicsState()
         {
-          prevmap = picture;
-          prevgstate = graphics.Save();
+          //prevmap = picture;
+          //prevgstate = graphics.Save();
           if (pictureBox.Image!=null)
             prevpic = (Image)pictureBox.Image.Clone();
         }
@@ -114,16 +115,59 @@ namespace MyPaint_FabricPattern
         {
             try
             {
-                nextpic = (Image)pictureBox.Image.Clone();
-                nextgstate = graphics.Save();
-                if (prevpic != null)
-                   // picture = new Bitmap(prevpic);
-                pictureBox.Image = prevpic;
+                //nextpic = (Image)pictureBox.Image.Clone();
+                // nextgstate = graphics.Save();
+                // if (prevpic != null)
+                // picture = new Bitmap(prevpic);
+                //pictureBox.Image = prevpic;
                 //ImageFormatConverter imageFormatConverter = new ImageFormatConverter;
-                picture = (Bitmap)pictureBox.Image;
+                //picture = (Bitmap)pictureBox.Image;
+
+                Shape buff = shape_list.Last();
+                String id_2 = painter.CurrentShapeToPaintID;
+                nextshapeid = id_2;
+                painter.SetColor(Color.White);
+                painter.points = buff.points;
+                switch (id_2)
+                {
+                    case "Triangle":
+                        PointF p = new PointF();
+                        p.X = painter.points[1].X + painter.ShapeWidth * 2;
+                        p.Y = painter.points[1].Y;
+                        graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                        graphics.DrawLine(painter.pen, painter.points[1], p);
+                        graphics.DrawLine(painter.pen, p, painter.points[0]);
+                        //shape_list.Add(painter.Create());
+                        break;
+
+                    case "Rectangle":
+                        graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                       // shape_list.Add(painter.Create());
+                        break;
+                    case "Square":
+                        graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                        //shape_list.Add(painter.Create());
+                        break;
+
+                    case "Line":
+                        graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                       // shape_list.Add(painter.Create());
+                        break;
+
+                    case "Ellipse":
+                        graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                        break;
+
+                    case "Circuit":
+                        graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                        break;
+
+                    case "Quadrilateral":
+                        //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                        break;
+                }
+                painter.SetColor(Color.Black);
                 
-
-
             }
             catch
             {
@@ -141,8 +185,49 @@ namespace MyPaint_FabricPattern
         {
             try
             {
-                prevgstate = graphics.Save();
-                graphics.Restore(nextgstate);
+                Shape buff = shape_list.Last();
+                String id_2 = nextshapeid;
+                painter.SetColor(Color.Black);
+                painter.points = buff.points;
+                switch (id_2)
+                {
+                    case "Triangle":
+                        PointF p = new PointF();
+                        p.X = painter.points[1].X + painter.ShapeWidth * 2;
+                        p.Y = painter.points[1].Y;
+                        graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                        graphics.DrawLine(painter.pen, painter.points[1], p);
+                        graphics.DrawLine(painter.pen, p, painter.points[0]);
+                        //shape_list.Add(painter.Create());
+                        break;
+
+                    case "Rectangle":
+                        graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                        // shape_list.Add(painter.Create());
+                        break;
+                    case "Square":
+                        graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                        //shape_list.Add(painter.Create());
+                        break;
+
+                    case "Line":
+                        graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                        // shape_list.Add(painter.Create());
+                        break;
+
+                    case "Ellipse":
+                        graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                        break;
+
+                    case "Circuit":
+                        graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                        break;
+
+                    case "Quadrilateral":
+                        //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                        break;
+                }
+                
             }
             catch
             {
@@ -332,10 +417,12 @@ namespace MyPaint_FabricPattern
 
                 case "Ellipse":
                    graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                    shape_list.Add(painter.Create());
                     break;
 
                 case "Circuit":
                     graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                    shape_list.Add(painter.Create());
                     break;
 
                 case "Quadrilateral":
