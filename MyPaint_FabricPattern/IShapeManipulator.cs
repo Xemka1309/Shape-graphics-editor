@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
-
 
 namespace MyPaint_FabricPattern
 {
-         
-    public abstract class Shape
+    public interface IShapeManipulator
     {
-        public PointF[] points;
-        public Color color;
-        public float outline_width;
+        // Color GetColor();
+        // Color ChangeColor();
+        // void Paint();
+        // void Remove();
 
     }
-    
 }
