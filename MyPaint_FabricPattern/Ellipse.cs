@@ -4,21 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-
+using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
 namespace MyPaint_FabricPattern
 {
+    [DataContract]
     class Ellipse : Shape, IShapeManipulator
     {
-        float width, height;
+        [DataMember]
+        PointF upper_left_point;
+        [DataMember]
+        float width;
+        [DataMember]
+        float height;
         public Ellipse(float outline_width, Color color, PointF upper_left_point, float width, float height)
         {
             this.color = color;
             this.outline_width = outline_width;
             this.points = new PointF[4];
-            this.points[0] = upper_left_point;
+            this.upper_left_point = upper_left_point;
             this.width = width;
             this.height = height;
-            this.Paint();
+            //this.Paint();
         }
         // конструктор для окружности
         public Ellipse(float outline_width, Color color, PointF upper_left_point, float width)
@@ -26,10 +33,10 @@ namespace MyPaint_FabricPattern
             this.color = color;
             this.outline_width = outline_width;
             this.points = new PointF[4];
-            this.points[0] = upper_left_point;
+            this.upper_left_point = upper_left_point;
             this.width = width;
             this.height = width;
-            this.Paint();
+            //this.Paint();
         }
         public void Paint()
         {

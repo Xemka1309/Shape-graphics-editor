@@ -20,6 +20,7 @@ namespace MyPaint_FabricPattern
         static public GraphicsState prevgstate, nextgstate;
         static public Image prevpic, nextpic;
         static public Bitmap prevmap, nextmap;
+        static public Bitmap nullmap;
 
         static public Bitmap[] prevmaps;
         static public Bitmap[] nextmaps;
@@ -51,12 +52,12 @@ namespace MyPaint_FabricPattern
 
             picture = new Bitmap(680, 400);
             buffpicture = new Bitmap(680, 400);
-
+            nullmap = new Bitmap(100,100);
             states = new LinkedList<Bitmap>();
             //prevgstate = graphics.Save();
             prevmap = new Bitmap(680, 400);
             Graphics.FromImage(prevmap).DrawImage(picture, 0, 0);
-
+            states.AddFirst(nullmap);
             states.AddFirst(prevmap);
 
             prevmaps = new Bitmap[20];
@@ -112,7 +113,7 @@ namespace MyPaint_FabricPattern
             //Rectangle rectangle = new Rectangle(10, Color.Bisque, points[2], 300, 200);
             //Ellipse ellipse= new Ellipse(10, Color.Bisque, points[2], 300, 200);
             //Line line = new Line(100, Color.DarkOliveGreen, points[3], points[4]);
-            Quadrilateral quadrilateral = new Quadrilateral(100, Color.DarkOrange, points);
+            //Quadrilateral quadrilateral = new Quadrilateral(100, Color.DarkOrange, points);
            
         }
         
@@ -148,72 +149,80 @@ namespace MyPaint_FabricPattern
 
         private void toolStripButtonUndo_Click(object sender, EventArgs e)
         {
-            editflag = true;
-            try
+            if (states.First() != nullmap)
             {
-                prevmap = states.First();
-                SaveNextGraphicsState();
-                states.RemoveFirst();
+                editflag = true;
+                try
+                {
+                    prevmap = states.First();
+                    SaveNextGraphicsState();
+                    states.RemoveFirst();
 
-                Graphics bgraphics = Graphics.FromImage(buffpicture);
-                picture = new Bitmap(680, 400);
-                Graphics graphics = Graphics.FromImage(picture);
+                    Graphics bgraphics = Graphics.FromImage(buffpicture);
+                    picture = new Bitmap(680, 400);
+                    Graphics graphics = Graphics.FromImage(picture);
 
-                graphics.DrawImage(prevmap, 0, 0);
+                    graphics.DrawImage(prevmap, 0, 0);
 
-                graphics.DrawImage(prevmap, 0, 0);
-                graphics.Restore(prevgstate);
+                    graphics.DrawImage(prevmap, 0, 0);
+                    graphics.Restore(prevgstate);
 
-                bgraphics.DrawImage(prevmap, 0, 0);
+                    bgraphics.DrawImage(prevmap, 0, 0);
 
-                pictureBox.Image = picture;
-                editflag = false;
+                    pictureBox.Image = picture;
+                    editflag = false;
 
+                }
+                catch
+                {
+
+                    MessageBox.Show("No previous state saved");
+                }
+                finally
+                {
+                    //MessageBox.Show("Done");
+                }
             }
-            catch
-            {
-
-                MessageBox.Show("No previous state saved");
-            }
-            finally
-            {
-                //MessageBox.Show("Done");
-            }
+            
         }
 
         private void toolStripButtonRedo_Click(object sender, EventArgs e)
         {
-            editflag = true;
-            try
+            if (states.Last() != nullmap)
             {
-                nextmap = states.Last();
-                SavePrevGraphicsState();
-                states.RemoveLast();
+                editflag = true;
+                try
+                {
+                    nextmap = states.Last();
+                    SavePrevGraphicsState();
+                    states.RemoveLast();
 
-                Graphics bgraphics = Graphics.FromImage(buffpicture);
-                picture = new Bitmap(680, 400);
-                Graphics graphics = Graphics.FromImage(picture);
+                    Graphics bgraphics = Graphics.FromImage(buffpicture);
+                    picture = new Bitmap(680, 400);
+                    Graphics graphics = Graphics.FromImage(picture);
 
-                graphics.DrawImage(nextmap, 0, 0);
+                    graphics.DrawImage(nextmap, 0, 0);
 
-                graphics.DrawImage(nextmap, 0, 0);
-                graphics.Restore(prevgstate);
+                    graphics.DrawImage(nextmap, 0, 0);
+                    graphics.Restore(prevgstate);
 
-                bgraphics.DrawImage(nextmap, 0, 0);
+                    bgraphics.DrawImage(nextmap, 0, 0);
 
-                pictureBox.Image = picture;
-                editflag = false;
+                    pictureBox.Image = picture;
+                    editflag = false;
 
+                }
+                catch
+                {
+
+                    MessageBox.Show("No previous state saved");
+                }
+                finally
+                {
+                    //MessageBox.Show("Done");
+                }
             }
-            catch
-            {
-
-                MessageBox.Show("No previous state saved");
-            }
-            finally
-            {
-                //MessageBox.Show("Done");
-            }
+            
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -407,7 +416,54 @@ namespace MyPaint_FabricPattern
                 painter.prevpoint = e.Location;
             }
         }
-           
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Serializator serializator = Serializator.getInstance();
+            Rectangle shape = new Rectangle(2, Color.Aqua, new PointF(20, 50), 250);
+            serializator.Serialize_JSON(shape, shape.GetType());
+
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Serializator serializator = Serializator.getInstance();
+            serializator.SetFilePass("Shapes.json");
+            //Shape[] shapes = new Shape[shape_list.Count];
+            int i = 0;
+            while (shape_list.Count != 0)
+            {
+                MessageBox.Show(shape_list.First().GetType().ToString());
+                serializator.Serialize_JSON(shape_list.First(), shape_list.First().GetType());
+                //вкрнуть назад
+                shape_list.Remove(shape_list.First());
+                i++;
+            }
+            //serializator.Serialize_JSON(shapes, shapes.GetType());
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Serializator serializator = Serializator.getInstance();
+            shape_list.Clear();
+            picture = new Bitmap(600, 400);
+            Shape shape = (Shape)serializator.DeSerialize_JSON(typeof(Rectangle));
+            if (shape.GetType() == typeof(Rectangle))
+            {
+                MessageBox.Show("zaebis");
+            }
+            while (serializator.DeSerialize_JSON(typeof(Shape)) !=null)
+            {
+
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Serializator serializator = Serializator.getInstance();
+            serializator.Serialize_All(shape_list); 
+
+        }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
@@ -458,7 +514,8 @@ namespace MyPaint_FabricPattern
                         //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
                         break;
                 }
-               
+                states.AddLast(nullmap);
+                SaveNextGraphicsState();
             }
             
             
@@ -510,7 +567,7 @@ namespace MyPaint_FabricPattern
             this.pen.Width = width;
         }
 
-       
+        
 
        
         
@@ -578,7 +635,7 @@ namespace MyPaint_FabricPattern
                     buffg.DrawEllipse(pen, points[0].X, points[0].Y, ShapeWidth, ShapeWidth);
                     break;
                 case "Quadrilateral":
-                    LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                    //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
                     break;
             }
             
@@ -612,7 +669,7 @@ namespace MyPaint_FabricPattern
                     LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth);
                     break;
                 case "Quadrilateral":
-                    LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                    //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
                     break;
             }
             return LastShape;

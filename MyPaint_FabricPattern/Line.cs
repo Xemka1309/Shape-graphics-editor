@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-
+using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
 namespace MyPaint_FabricPattern
 {
+    [DataContract]
     class Line : Shape, IShapeManipulator
     {
         public Line(float outline_width, Color color, PointF point1, PointF point2)
@@ -16,7 +18,7 @@ namespace MyPaint_FabricPattern
             this.points = new PointF[2];
             this.points[0] = point1;
             this.points[1] = point2;
-            this.Paint();
+            //this.Paint();
         }
         public void Paint()
         {

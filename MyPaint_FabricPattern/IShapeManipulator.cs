@@ -8,7 +8,7 @@ namespace MyPaint_FabricPattern
 {
     public interface IShapeManipulator
     {
-        // Color GetColor();
+         //Color GetColor();
         // Color ChangeColor();
         // void Paint();
         // void Remove();

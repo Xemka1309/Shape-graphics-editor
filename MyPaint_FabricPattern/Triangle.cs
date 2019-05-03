@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-
+using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
 namespace MyPaint_FabricPattern
 {
+    [DataContract]
     class Triangle : Shape, IShapeManipulator
     {
+        
         public Triangle(float outline_width, Color color, PointF[] points)
         {
             this.color = color;
@@ -17,7 +20,7 @@ namespace MyPaint_FabricPattern
             this.points[0] = points[0];
             this.points[1] = points[1];
             this.points[2] = points[2];
-            this.Paint();
+            //this.Paint();
         }
         public void Paint()
         {
