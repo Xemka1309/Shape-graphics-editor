@@ -10,7 +10,7 @@ namespace MyPaint_FabricPattern
     {
          //Color GetColor();
         // Color ChangeColor();
-        // void Paint();
+         //void Paint();
         // void Remove();
 
     }

@@ -21,7 +21,6 @@ namespace MyPaint_FabricPattern
         {
             this.color = color;
             this.outline_width = outline_width;
-            this.points = new PointF[4];
             this.upper_left_point = upper_left_point;
             this.width = width;
             this.height = height;
@@ -32,17 +31,14 @@ namespace MyPaint_FabricPattern
         {
             this.color = color;
             this.outline_width = outline_width;
-            this.points = new PointF[4];
             this.upper_left_point = upper_left_point;
             this.width = width;
             this.height = width;
             //this.Paint();
         }
-        public void Paint()
+        override public void Paint()
         {
-
-            //MainForm.painter.SaveGraphicsState();
-            MainForm.graphics.DrawEllipse(MainForm.painter.pen, points[0].X, points[0].Y, width, height);
+            MainForm.graphics.DrawEllipse(MainForm.painter.pen, upper_left_point.X, upper_left_point.Y, width, height);
             MainForm.painter.LastShape = this;
         }
     }

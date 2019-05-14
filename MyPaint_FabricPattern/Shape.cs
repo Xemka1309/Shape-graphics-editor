@@ -13,11 +13,14 @@ namespace MyPaint_FabricPattern
     public abstract class Shape
     {
         
-        public PointF[] points;
+        //public PointF[] points;
         [DataMember]
         public Color color;
         [DataMember]
         public float outline_width;
+        public virtual void Paint() { }
+        
+        
 
     }
     

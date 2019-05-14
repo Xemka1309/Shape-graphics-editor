@@ -72,6 +72,11 @@ namespace MyPaint_FabricPattern
             
         }
 
+        public  void SetPictureBoxImage(Bitmap pic)
+        {
+            pictureBox.Image = pic;
+        }
+
         public void SaveNextGraphicsState()
         {
             Bitmap nextmap = new Bitmap(680, 400);
@@ -428,7 +433,7 @@ namespace MyPaint_FabricPattern
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Serializator serializator = Serializator.getInstance();
-            serializator.SetFilePass("Shapes.json");
+            //serializator.SetFilePass("Shapes.json");
             //Shape[] shapes = new Shape[shape_list.Count];
             int i = 0;
             while (shape_list.Count != 0)
@@ -462,6 +467,29 @@ namespace MyPaint_FabricPattern
         {
             Serializator serializator = Serializator.getInstance();
             serializator.Serialize_All(shape_list); 
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Serializator serializator = Serializator.getInstance();
+            //serializator.SetFilePass("shapes/shapes.json", "shapes/types.json",true);
+            //serializator.Serialize(shape_list);
+            Serializator.getInstance().Serialize_new(shape_list);
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            List<Shape> bufflist=new List<Shape>();// = MainForm.shape_list;
+                                                   //Serializator.getInstance().SetFilePass("shapes/shapes.json", "shapes/types.json", false);
+                                                   // Serializator.getInstance().DeSerialize(bufflist);
+            bufflist = Serializator.getInstance().Deserialize_new();
+            painter.DrawShapeList(bufflist);
+            pictureBox.Image = picture;
+        }
+
+        private void pictureBox_Click(object sender, EventArgs e)
+        {
 
         }
 
@@ -567,10 +595,6 @@ namespace MyPaint_FabricPattern
             this.pen.Width = width;
         }
 
-        
-
-       
-        
         public void SelectButton(ToolStripButton button)
         {
             if (SelectedButton!=null)
@@ -682,6 +706,36 @@ namespace MyPaint_FabricPattern
             point.X = Cursor.Current.HotSpot.X;
             point.Y = Cursor.Current.HotSpot.Y;
             return point;
+        }
+        
+        public void DrawShapeList(List<Shape> shape_list)
+        {
+            
+            Graphics bgraphics = Graphics.FromImage(MainForm.buffpicture);
+            MainForm.picture = new Bitmap(680, 400);
+            MainForm.graphics = Graphics.FromImage(MainForm.picture);
+
+            //MainForm.graphics = Graphics.FromImage(MainForm.picture);
+            int count = 0;
+            while (count != shape_list.Count)
+            {
+                Shape shape = shape_list.ElementAt(count);
+                shape.Paint();
+                count++;
+            }
+
+           // graphics.DrawImage(MainForm.prevmap, 0, 0);
+
+            //graphics.DrawImage(MainForm.prevmap, 0, 0);
+            //graphics.Restore(MainForm.prevgstate);
+
+            //bgraphics.DrawImage(MainForm.prevmap, 0, 0);
+
+            //MainForm.SetPictureBoxImage(MainForm.picture);
+            //MainForm.editflag = false;
+            //MainForm.picture = new Bitmap(680, 400);
+            
+
         }
 
     }

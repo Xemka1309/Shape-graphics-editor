@@ -11,23 +11,25 @@ namespace MyPaint_FabricPattern
     [DataContract]
     class Triangle : Shape, IShapeManipulator
     {
-        
+        [DataMember]
+        PointF point1;
+        [DataMember]
+        PointF point2;
+        [DataMember]
+        PointF point3;
         public Triangle(float outline_width, Color color, PointF[] points)
         {
             this.color = color;
             this.outline_width = outline_width;
-            this.points = new PointF[3];
-            this.points[0] = points[0];
-            this.points[1] = points[1];
-            this.points[2] = points[2];
-            //this.Paint();
+            this.point1 = points[0];
+            this.point2 = points[1];
+            this.point3 = points[2];
         }
-        public void Paint()
+        override public void Paint()
         {
-            //MainForm.painter.SaveGraphicsState();
-            MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[0], this.points[1]);
-            MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[1], this.points[2]);
-            MainForm.graphics.DrawLine(MainForm.painter.pen, this.points[2], this.points[0]);
+            MainForm.graphics.DrawLine(MainForm.painter.pen, this.point1, this.point2);
+            MainForm.graphics.DrawLine(MainForm.painter.pen, this.point2, this.point3);
+            MainForm.graphics.DrawLine(MainForm.painter.pen, this.point3, this.point1);
             MainForm.painter.LastShape = this;
         }
     }
