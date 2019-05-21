@@ -26,53 +26,66 @@ namespace MyPaint_FabricPattern
         static public Bitmap[] nextmaps;
 
         static public LinkedList<Bitmap> states;
+        static public LinkedList<List<Shape>> shapestates;
 
         static public int redoind;
+        static public int buff;
 
         static public Bitmap picture;
         static public Bitmap buffpicture;
 
         static public Boolean editflag;
+        static public Boolean changeflag;
+        static public Boolean posflag;
         static public Cursor cursor;
         static public Graphics buffgraphics;
-        static public  Graphics graphics;
-        static public  Painter painter;    
+        static public Graphics graphics;
+        static public Painter painter;
         public MainForm()
         {
             InitializeComponent();
             colorDialog.Color = Color.Black;
 
 
-            
+            shapestates = new LinkedList<List<Shape>>();
             shape_list = new List<Shape>();
-            
+            Line nullshape = new Line(0, Color.Navy, new PointF(), new PointF());
+            //shape_list.Add(nullshape);
+
             painter = new Painter();
             painter.SetWidth(3);
             painter.currentpoint = new Point(0, 0);
 
             picture = new Bitmap(680, 400);
             buffpicture = new Bitmap(680, 400);
-            nullmap = new Bitmap(100,100);
+            nullmap = new Bitmap(100, 100);
             states = new LinkedList<Bitmap>();
             //prevgstate = graphics.Save();
             prevmap = new Bitmap(680, 400);
             Graphics.FromImage(prevmap).DrawImage(picture, 0, 0);
             states.AddFirst(nullmap);
             states.AddFirst(prevmap);
-
+            changeflag = false;
+            posflag = false;
             prevmaps = new Bitmap[20];
             nextmaps = new Bitmap[20];
-            redoind = 0;
-            
+            redoind = 50;
+            Serializator.getInstance().Serialize(shape_list, "BUFF/" + Convert.ToString(redoind) + ".json");
+            redoind++;
+
+
+            Serializator s = Serializator.getInstance();
+
+
             //graphics = pictureBox.CreateGraphics();
             graphics = Graphics.FromImage(picture);
             buffgraphics = Graphics.FromImage(buffpicture);
-           // graphics.Clear(Color.White);
+            // graphics.Clear(Color.White);
             //prevgstate = nextgstate = graphics.Save();
-            
+
         }
 
-        public  void SetPictureBoxImage(Bitmap pic)
+        public void SetPictureBoxImage(Bitmap pic)
         {
             pictureBox.Image = pic;
         }
@@ -82,46 +95,89 @@ namespace MyPaint_FabricPattern
             Bitmap nextmap = new Bitmap(680, 400);
             Graphics.FromImage(nextmap).DrawImage(picture, 0, 0);
             states.AddLast(nextmap);
+            shapestates.AddLast(shape_list);
         }
 
         public void SavePrevGraphicsState()
         {
-            
+
             prevgstate = graphics.Save();
             prevmap = new Bitmap(680, 400);
-            Graphics.FromImage(prevmap).DrawImage(picture,0,0);
+            Graphics.FromImage(prevmap).DrawImage(picture, 0, 0);
             //добавляем в начало
             states.AddFirst(prevmap);
+            shapestates.AddFirst(shape_list);
 
         }
-
+        private void Serundo()
+        {
+            Serializator.getInstance().Serialize(shape_list, "BUFF/" + Convert.ToString(redoind)+".json");
+            shape_list = Serializator.getInstance().Desirialize_err("BUFF/" + Convert.ToString(redoind - 1) + ".json");
+            redoind--;
+            painter.DrawShapeList(shape_list);
+            PaintShapeList();
+            Refresh();
+        }
+        private void Serredo()
+        {
+            Serializator.getInstance().Serialize(shape_list, "BUFF/" + Convert.ToString(redoind) + ".json");
+            shape_list = Serializator.getInstance().Desirialize_err("BUFF/" + Convert.ToString(redoind + 1) + ".json");
+            redoind++;
+            painter.DrawShapeList(shape_list);
+            PaintShapeList();
+            Refresh();
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             
         }
 
-        private void Button_test_Click(object sender, EventArgs e)
+        public void PaintShapeList()
         {
-            //painter.SaveGraphicsState();
-            PointF[] points = new PointF[10];
-            points[0].X = 22;
-            points[2].X = 44;
-            points[1].X = 66;
-            points[0].Y = 45;
-            points[1].Y = 67;
-            points[2].Y = 99;
-            points[3].X = 200;
-            points[3].Y = 100;
-            points[4].X = 400;
-            points[4].Y = 200;
-            //Triangle triangle = new Triangle(5,Color.Aquamarine, points);
-            //Rectangle rectangle = new Rectangle(10, Color.Bisque, points[2], 300, 200);
-            //Ellipse ellipse= new Ellipse(10, Color.Bisque, points[2], 300, 200);
-            //Line line = new Line(100, Color.DarkOliveGreen, points[3], points[4]);
-            //Quadrilateral quadrilateral = new Quadrilateral(100, Color.DarkOrange, points);
-           
+            listViewshapes.Clear();
+            for (int i = 0; i < shape_list.Count; i++)
+            {
+                Shape shape = shape_list.ElementAt(i);
+                String id = Serializator.getInstance().GetStringType(shape.GetType());
+                switch (id)
+                {
+                    case "Triangle":
+
+                        listViewshapes.Items.Add("Triangle", 4);
+                        break;
+
+                    case "Rectangle":
+
+                        listViewshapes.Items.Add("Rectangle", 3);
+                        break;
+                    case "Square":
+
+                        listViewshapes.Items.Add("Square", 5);
+                        break;
+
+                    case "Line":
+
+                        listViewshapes.Items.Add("Line", 2);
+                        break;
+
+                    case "Ellipse":
+
+                        listViewshapes.Items.Add("Ellipse", 1);
+
+                        break;
+
+                    case "Circuit":
+
+                        listViewshapes.Items.Add("Circuit", 0);
+                        break;
+
+
+                }
+            }
+
         }
-        
+
+
         private void rectangleToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -131,8 +187,8 @@ namespace MyPaint_FabricPattern
         {
             try
             {
-               painter.SetWidth(Convert.ToSingle(toolStripTextBoxWidth.Text));
-               
+                painter.SetWidth(Convert.ToSingle(toolStripTextBoxWidth.Text));
+
             }
             catch
             {
@@ -154,11 +210,27 @@ namespace MyPaint_FabricPattern
 
         private void toolStripButtonUndo_Click(object sender, EventArgs e)
         {
+            editflag = true;
+            try
+            {
+                Serundo();
+            }
+            catch
+            {
+
+                MessageBox.Show("No previous state saved");
+            }
+            finally
+            {
+                editflag = false;
+            }
+            /*
             if (states.First() != nullmap)
             {
                 editflag = true;
                 try
                 {
+                    shape_list = shapestates.First();
                     prevmap = states.First();
                     SaveNextGraphicsState();
                     states.RemoveFirst();
@@ -187,17 +259,18 @@ namespace MyPaint_FabricPattern
                 {
                     //MessageBox.Show("Done");
                 }
-            }
-            
+            }*/
+
         }
 
         private void toolStripButtonRedo_Click(object sender, EventArgs e)
         {
-            if (states.Last() != nullmap)
+            /*if (states.Last() != nullmap)
             {
                 editflag = true;
                 try
                 {
+                    shape_list = shapestates.Last();
                     nextmap = states.Last();
                     SavePrevGraphicsState();
                     states.RemoveLast();
@@ -227,7 +300,22 @@ namespace MyPaint_FabricPattern
                     //MessageBox.Show("Done");
                 }
             }
-            
+            */
+            editflag = true;
+            try
+            {
+                Serredo();
+            }
+            catch
+            {
+
+                MessageBox.Show("No previous state saved");
+            }
+            finally
+            {
+                editflag = false;
+            }
+
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -235,33 +323,16 @@ namespace MyPaint_FabricPattern
             editflag = true;
             try
             {
-                prevmap = states.First();
-                SaveNextGraphicsState();
-                states.RemoveFirst();
-
-                Graphics bgraphics = Graphics.FromImage(buffpicture);
-                picture = new Bitmap(680, 400);
-                Graphics graphics = Graphics.FromImage(picture);
-               
-                graphics.DrawImage(prevmap, 0, 0);
-                
-                graphics.DrawImage(prevmap,0,0);
-                graphics.Restore(prevgstate);
-               
-                bgraphics.DrawImage(prevmap, 0, 0);
-                
-                pictureBox.Image = picture;
-                editflag = false;
-                
+                Serundo();
             }
             catch
             {
-                
+
                 MessageBox.Show("No previous state saved");
             }
             finally
             {
-                //MessageBox.Show("Done");
+                editflag = false;
             }
         }
 
@@ -270,23 +341,7 @@ namespace MyPaint_FabricPattern
             editflag = true;
             try
             {
-                nextmap = states.Last();
-                SavePrevGraphicsState();
-                states.RemoveLast();
-
-                Graphics bgraphics = Graphics.FromImage(buffpicture);
-                picture = new Bitmap(680, 400);
-                Graphics graphics = Graphics.FromImage(picture);
-
-                graphics.DrawImage(nextmap, 0, 0);
-
-                graphics.DrawImage(nextmap, 0, 0);
-                graphics.Restore(prevgstate);
-
-                bgraphics.DrawImage(nextmap, 0, 0);
-
-                pictureBox.Image = picture;
-                editflag = false;
+                Serredo();
 
             }
             catch
@@ -296,7 +351,7 @@ namespace MyPaint_FabricPattern
             }
             finally
             {
-                //MessageBox.Show("Done");
+                editflag = false;
             }
         }
 
@@ -359,8 +414,8 @@ namespace MyPaint_FabricPattern
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-           // painter.points[0] = painter.GetCursor();
-           
+            // painter.points[0] = painter.GetCursor();
+
         }
 
         private void pictureBox1_CursorChanged(object sender, EventArgs e)
@@ -370,33 +425,33 @@ namespace MyPaint_FabricPattern
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-          /* if (e.Button == MouseButtons.Left)
-           {
-                painter.points[painter.pointsset] = e.Location;
-                painter.pointsset++;
-                if (painter.pointsset >= 2)
-                {
-                    painter.ShapeWidth = painter.points[0].X - painter.points[1].X;
-                    if (painter.ShapeWidth < 0)
-                    {
-                        painter.ShapeWidth *= -1;
-                       // painter.points[0].
-                    }
-                        
-                }
-                if (painter.pointsneed == painter.pointsset)
-                {
-                    //painter.Create();
-                }
-           }
-           */
+            /* if (e.Button == MouseButtons.Left)
+             {
+                  painter.points[painter.pointsset] = e.Location;
+                  painter.pointsset++;
+                  if (painter.pointsset >= 2)
+                  {
+                      painter.ShapeWidth = painter.points[0].X - painter.points[1].X;
+                      if (painter.ShapeWidth < 0)
+                      {
+                          painter.ShapeWidth *= -1;
+                         // painter.points[0].
+                      }
+
+                  }
+                  if (painter.pointsneed == painter.pointsset)
+                  {
+                      //painter.Create();
+                  }
+             }
+             */
         }
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!editflag)
+            if (!editflag && !changeflag)
             {
-                
+
                 Point current = e.Location;
                 painter.currentpoint = current;
                 graphics = Graphics.FromImage(picture);
@@ -410,85 +465,223 @@ namespace MyPaint_FabricPattern
 
                 }
             }
-            
+            if (!editflag && changeflag)
+            {
+                painter.DrawShapeList(shape_list);
+                //Refresh();
+                Point current = e.Location;
+                painter.currentpoint = current;
+                graphics = Graphics.FromImage(picture);
+                buffgraphics = Graphics.FromImage(buffpicture);
+                if (e.Button == MouseButtons.Left)
+                {
+                    buffgraphics.Clear(Color.White);
+                    painter.Paint(graphics, buffgraphics);
+                    buffgraphics.DrawImage(picture, 0, 0);
+                    pictureBox.Image = buffpicture;
+
+                }
+            }
+
         }
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             SavePrevGraphicsState();
-            if (!editflag)
+            if (!editflag && !changeflag)
             {
                 painter.prevpoint = e.Location;
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Serializator serializator = Serializator.getInstance();
-            Rectangle shape = new Rectangle(2, Color.Aqua, new PointF(20, 50), 250);
-            serializator.Serialize_JSON(shape, shape.GetType());
 
-        }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Serializator serializator = Serializator.getInstance();
-            //serializator.SetFilePass("Shapes.json");
-            //Shape[] shapes = new Shape[shape_list.Count];
-            int i = 0;
-            while (shape_list.Count != 0)
-            {
-                MessageBox.Show(shape_list.First().GetType().ToString());
-                serializator.Serialize_JSON(shape_list.First(), shape_list.First().GetType());
-                //вкрнуть назад
-                shape_list.Remove(shape_list.First());
-                i++;
-            }
-            //serializator.Serialize_JSON(shapes, shapes.GetType());
+            Serializator.getInstance().SerializeDynamic(shape_list);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Serializator serializator = Serializator.getInstance();
-            shape_list.Clear();
-            picture = new Bitmap(600, 400);
-            Shape shape = (Shape)serializator.DeSerialize_JSON(typeof(Rectangle));
-            if (shape.GetType() == typeof(Rectangle))
-            {
-                MessageBox.Show("zaebis");
-            }
-            while (serializator.DeSerialize_JSON(typeof(Shape)) !=null)
-            {
-
-            }
+            //SavePrevGraphicsState();
+            //shape_list = Serializator.getInstance().Deserialize();
+            openFileDialog1.ShowDialog();
+            shape_list = Serializator.getInstance().Desirialize_err(openFileDialog1.FileName);
+            painter.DrawShapeList(shape_list);
+            pictureBox.Image = picture;
+            states.AddLast(nullmap);
+            SaveNextGraphicsState();
+            PaintShapeList();
+            painter.shape_was_select = false;
+            //MessageBox.Show(shape_list.Last().ToString());
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Serializator serializator = Serializator.getInstance();
-            serializator.Serialize_All(shape_list); 
+            saveFileDialog1.ShowDialog();
+            Serializator.getInstance().Serialize(shape_list, saveFileDialog1.FileName);
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        public void Refresh()
         {
-            //Serializator serializator = Serializator.getInstance();
-            //serializator.SetFilePass("shapes/shapes.json", "shapes/types.json",true);
-            //serializator.Serialize(shape_list);
-            Serializator.getInstance().Serialize_new(shape_list);
+            this.pictureBox.Image = picture;
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            List<Shape> bufflist=new List<Shape>();// = MainForm.shape_list;
-                                                   //Serializator.getInstance().SetFilePass("shapes/shapes.json", "shapes/types.json", false);
-                                                   // Serializator.getInstance().DeSerialize(bufflist);
-            bufflist = Serializator.getInstance().Deserialize_new();
-            painter.DrawShapeList(bufflist);
-            pictureBox.Image = picture;
-        }
 
         private void pictureBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listViewshapes_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            painter.DrawShapeList(shape_list);
+            painter.selected_shape = shape_list.ElementAt(e.ItemIndex);
+            painter.SelectShape();
+            pictureBox.Image = picture;
+            textBoxstatwidth.Text = Convert.ToString(painter.selected_shape.outline_width);
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxstatwidth_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonstatchangewidth_Click(object sender, EventArgs e)
+        {
+            if (!painter.shape_was_select)
+            {
+                MessageBox.Show("No selected shape");
+                return;
+            }
+            IEditable shape = painter.selected_shape as IEditable;
+            if (shape == null)
+            {
+                MessageBox.Show("This shape cant be edite");
+                return;
+            }
+
+        }
+
+        private void buttonstatchangeoutlinewidth_Click(object sender, EventArgs e)
+        {
+            if (!painter.shape_was_select)
+            {
+                MessageBox.Show("No selected shape");
+                return;
+            }
+            IEditable shape = painter.selected_shape as IEditable;
+            if (shape == null)
+            {
+                MessageBox.Show("This shape cant be edite");
+                return;
+            }
+            
+
+            try
+            {
+                shape.ChangeOutlineWidth(Convert.ToInt32(textBoxstatwidth.Text));
+                //MessageBox.Show(painter.selected_shape.outline_width.ToString());
+                
+                painter.DrawShapeList(shape_list);
+                painter.SelectShape();
+                Refresh();
+               // MainForm.
+            }
+            catch
+            {
+                MessageBox.Show("invalid value");
+            }
+
+        }
+
+        private void buttonstatchangecolor_Click(object sender, EventArgs e)
+        {
+            if (!painter.shape_was_select)
+            {
+                MessageBox.Show("No selected shape");
+                return;
+            }
+            IEditable shape = painter.selected_shape as IEditable;
+            if (shape == null)
+            {
+                MessageBox.Show("This shape cant be edite");
+                return;
+            }
+            colorDialog.ShowDialog();
+            shape.ChangeColor(colorDialog.Color);
+            painter.DrawShapeList(shape_list);
+            painter.SelectShape();
+            Refresh();
+        }
+
+        private void listViewshapes_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            painter.shape_was_select = false;
+            painter.selected_shape = null;
+            painter.DrawShapeList(shape_list);
+            textBoxstatsize.Text = "noshape";
+            textBoxstatwidth.Text = "noshape";
+            PaintShapeList();
+            Refresh();
+        }
+
+        private void buttonchangesizeposition_Click(object sender, EventArgs e)
+        {
+            if (!painter.shape_was_select)
+            {
+                MessageBox.Show("No selected shape");
+                return;
+            }
+            IRepositable shape = painter.selected_shape as IRepositable;
+            if (shape == null)
+            {
+                MessageBox.Show("This shape cant be moved");
+                return;
+            }
+            painter.CurrentShapeToPaintID = Serializator.getInstance().GetStringType(painter.selected_shape.GetType());
+            changeflag = true;
+            editflag = false;
+            
+            painter.prevpoint = new PointF(shape.getpospoint().X, shape.getpospoint().Y);
+            painter.pen.Color = painter.selected_shape.color;
+            painter.pen.Width = painter.selected_shape.outline_width;
+            buff = shape_list.IndexOf(painter.selected_shape);
+            
+            shape_list.Remove(painter.selected_shape);
+        }
+
+        private void buttondeleteshape_Click(object sender, EventArgs e)
+        {
+            if (!painter.shape_was_select)
+            {
+                MessageBox.Show("No selected shape");
+                return;
+            }
+            Serializator.getInstance().Serialize(shape_list, "BUFF/" + Convert.ToString(redoind) + ".json");
+            redoind++;
+            shape_list.Remove(painter.selected_shape);
+            painter.selected_shape = null;
+            painter.shape_was_select = false;
+            painter.DrawShapeList(shape_list);
+            PaintShapeList();
+            Refresh();
+
+
+        }
+
+        private void buttonchangepos_Click(object sender, EventArgs e)
         {
 
         }
@@ -497,7 +690,7 @@ namespace MyPaint_FabricPattern
         {
             
             
-            if (!editflag)
+            if (!editflag && !changeflag)
             {
                 graphics = Graphics.FromImage(picture);
 
@@ -512,30 +705,37 @@ namespace MyPaint_FabricPattern
                         graphics.DrawLine(painter.pen, painter.points[1], p);
                         graphics.DrawLine(painter.pen, p, painter.points[0]);
                         shape_list.Add(painter.Create());
+                        listViewshapes.Items.Add("Triangle",4);
                         break;
 
                     case "Rectangle":
                         graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
                         shape_list.Add(painter.Create());
+                        listViewshapes.Items.Add("Rectangle",3);
                         break;
                     case "Square":
                         graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
                         shape_list.Add(painter.Create());
+                        listViewshapes.Items.Add("Square",5);
                         break;
 
                     case "Line":
                         graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
                         shape_list.Add(painter.Create());
+                        listViewshapes.Items.Add("Line",2);
                         break;
 
                     case "Ellipse":
                         graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
                         shape_list.Add(painter.Create());
+                        listViewshapes.Items.Add("Ellipse", 1);
+                        //listViewshapes.Items.
                         break;
 
                     case "Circuit":
                         graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
                         shape_list.Add(painter.Create());
+                        listViewshapes.Items.Add("Circuit",0);
                         break;
 
                     case "Quadrilateral":
@@ -546,6 +746,65 @@ namespace MyPaint_FabricPattern
                 SaveNextGraphicsState();
             }
             
+            
+                if (!editflag && changeflag)
+                {
+                    graphics = Graphics.FromImage(picture);
+
+                    String id = painter.CurrentShapeToPaintID;
+                    switch (id)
+                    {
+                        case "Triangle":
+                            PointF p = new PointF();
+                            p.X = painter.points[1].X + painter.ShapeWidth * 2;
+                            p.Y = painter.points[1].Y;
+                            graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                            graphics.DrawLine(painter.pen, painter.points[1], p);
+                            graphics.DrawLine(painter.pen, p, painter.points[0]);
+                            shape_list.Insert(buff, painter.Create());
+                            // listViewshapes.Items.Add("Triangle", 4);
+                            break;
+
+                        case "Rectangle":
+                            graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                            shape_list.Insert(buff, painter.Create());
+                            // listViewshapes.Items.Add("Rectangle", 3);
+                            break;
+                        case "Square":
+                            graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                            shape_list.Insert(buff, painter.Create());
+                            // listViewshapes.Items.Add("Square", 5);
+                            break;
+
+                        case "Line":
+                            graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
+                            shape_list.Insert(buff, painter.Create());
+                            // listViewshapes.Items.Add("Line", 2);
+                            break;
+
+                        case "Ellipse":
+                            graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
+                            shape_list.Insert(buff, painter.Create());
+                            listViewshapes.Items.Add("Ellipse", 1);
+                            //listViewshapes.Items.
+                            break;
+
+                        case "Circuit":
+                            graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
+                            shape_list.Insert(buff, painter.Create());
+                            //listViewshapes.Items.Add("Circuit", 0);
+                            break;
+
+                        case "Quadrilateral":
+                            //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
+                            break;
+                    }
+                    //states.AddLast(nullmap);
+                    //SaveNextGraphicsState();
+                    changeflag = false;
+                    PaintShapeList();
+                    Refresh();
+                }
             
         }
 
@@ -564,9 +823,10 @@ namespace MyPaint_FabricPattern
 
     public class Painter
     {
-       
-        public Point prevpoint;
-        public Point currentpoint;
+        public Shape selected_shape;
+        public Boolean shape_was_select;
+        public PointF prevpoint;
+        public PointF currentpoint;
         public int pointsneed;
         public int pointsset;
        // public PointF startpoint, endpoint;
@@ -582,8 +842,10 @@ namespace MyPaint_FabricPattern
         {
             pen = new Pen(Color.Black);
             points = new PointF[5];
-            
-            
+            shape_was_select = false;
+
+
+
         }
         public void SetColor(Color color)
         {
@@ -601,6 +863,85 @@ namespace MyPaint_FabricPattern
                 SelectedButton.BackColor = Color.White;
             SelectedButton = button;
             SelectedButton.BackColor = Color.OrangeRed;
+        }
+        public void SelectShape()
+        {
+            float width, height;
+            PointF upperleftpoint;
+            Pen penbuff = new Pen(Color.Red,3);
+            String id = Serializator.getInstance().GetStringType(selected_shape.GetType());
+            switch (id)
+            {
+                case "Triangle":
+                Triangle triangle = selected_shape as Triangle;
+                upperleftpoint = new PointF(triangle.point2.X-20, triangle.point1.Y-20);
+                width = triangle.point3.X - triangle.point2.X + 40;
+                height = triangle.point2.Y - triangle.point1.Y + 40;
+                MainForm.graphics = Graphics.FromImage(MainForm.picture);
+                MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X,upperleftpoint.Y, width, height);
+                
+                
+                break;
+
+                case "Rectangle":
+                    Rectangle rectangle = selected_shape as Rectangle;
+                    upperleftpoint = new PointF();
+                    upperleftpoint.X = rectangle.upper_left_point.X - 20;
+                    upperleftpoint.Y = rectangle.upper_left_point.Y - 20;
+                    width = rectangle.width + 40;
+                    height = rectangle.height + 40;
+                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+                    //MainForm.graphics.DrawLine(penbuff,0, 0, 20, 20);
+                    break;
+                case "Square":
+                    Rectangle square = selected_shape as Rectangle;
+                    upperleftpoint = new PointF();
+                    upperleftpoint.X = square.upper_left_point.X - 20;
+                    upperleftpoint.Y = square.upper_left_point.Y - 20;
+                    width = square.width + 40;
+                    height = square.height + 40;
+                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+
+                    break;
+
+                case "Line":
+                    Line line = selected_shape as Line;
+                    upperleftpoint = new PointF();
+                    upperleftpoint.X = line.point1.X - 20;
+                    upperleftpoint.Y = line.point1.Y - 20;
+                    width = line.point2.X-line.point1.X+40;
+                    height = line.point2.Y-line.point1.Y + 40;
+                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+
+
+                    break;
+
+                case "Ellipse":
+                    Ellipse ellipse= selected_shape as Ellipse;
+                    upperleftpoint = new PointF();
+                    upperleftpoint.X = ellipse.upper_left_point.X - 20;
+                    upperleftpoint.Y = ellipse.upper_left_point.Y - 20;
+                    width = ellipse.width + 40;
+                    height = ellipse.height + 40;
+                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+
+                    break;
+
+                case "Circuit":
+                    Ellipse circuit = selected_shape as Ellipse;
+                    upperleftpoint = new PointF();
+                    upperleftpoint.X = circuit.upper_left_point.X - 20;
+                    upperleftpoint.Y = circuit.upper_left_point.Y - 20;
+                    width = circuit.width + 40;
+                    height = circuit.height + 40;
+                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+
+                    break;
+
+                
+             }
+            shape_was_select = true;
+            
         }
         public void Paint(Graphics g, Graphics buffg)
         {
@@ -669,6 +1010,8 @@ namespace MyPaint_FabricPattern
         }
         public Shape Create()
         {
+            Serializator.getInstance().Serialize(MainForm.shape_list, "BUFF/" + Convert.ToString(MainForm.redoind) + ".json");
+            MainForm.redoind++;
             String id = CurrentShapeToPaintID;
             switch (id)
             {
@@ -710,9 +1053,9 @@ namespace MyPaint_FabricPattern
         
         public void DrawShapeList(List<Shape> shape_list)
         {
-            
+            MainForm.picture = new Bitmap(680,400);
             Graphics bgraphics = Graphics.FromImage(MainForm.buffpicture);
-            MainForm.picture = new Bitmap(680, 400);
+            //MainForm.picture = new Bitmap(680, 400);
             MainForm.graphics = Graphics.FromImage(MainForm.picture);
 
             //MainForm.graphics = Graphics.FromImage(MainForm.picture);
@@ -721,8 +1064,11 @@ namespace MyPaint_FabricPattern
             {
                 Shape shape = shape_list.ElementAt(count);
                 shape.Paint();
+                
                 count++;
             }
+            
+            //MainForm.PaintShapeList();
 
            // graphics.DrawImage(MainForm.prevmap, 0, 0);
 
@@ -734,7 +1080,7 @@ namespace MyPaint_FabricPattern
             //MainForm.SetPictureBoxImage(MainForm.picture);
             //MainForm.editflag = false;
             //MainForm.picture = new Bitmap(680, 400);
-            
+
 
         }
 

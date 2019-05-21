@@ -18,3 +18,6 @@ C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_F
 C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\MyPaint_FabricPattern.exe.config
 C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\MyPaint_FabricPattern.exe
 C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\MyPaint_FabricPattern.pdb
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.csproj.CopyComplete

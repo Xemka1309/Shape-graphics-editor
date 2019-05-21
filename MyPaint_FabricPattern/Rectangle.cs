@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace MyPaint_FabricPattern
 {
+    //[JsonObject]
     [DataContract]
-    class Rectangle : Shape, IShapeManipulator
+    class Rectangle : Shape, IEditable, IRepositable
     {
+       // [JsonProperty("upper_left_point")]
         [DataMember]
-        PointF upper_left_point;
+        public PointF upper_left_point;
+        //[JsonProperty("width")]
         [DataMember]
-        float width;
+        public float width;
+        //[JsonProperty("height")]
         [DataMember]
-        float height;
+        public float height;
 
         public Rectangle(float outline_width, Color color, PointF upper_left_point, float width, float height)
         {
@@ -42,8 +47,20 @@ namespace MyPaint_FabricPattern
         override public void Paint()
         {
             
-            MainForm.graphics.DrawRectangle(MainForm.painter.pen, upper_left_point.X, upper_left_point.Y, width, height);
+            MainForm.graphics.DrawRectangle(new Pen(this.color, this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
             MainForm.painter.LastShape = this;
+        }
+        public void ChangeOutlineWidth(float width)
+        {
+            this.outline_width = width;
+        }
+        public void ChangeColor(Color color)
+        {
+            this.color = color;
+        }
+        public PointF getpospoint()
+        {
+            return upper_left_point;
         }
     }
 }

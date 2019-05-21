@@ -9,14 +9,14 @@ using System.Runtime.Serialization;
 namespace MyPaint_FabricPattern
 {
     [DataContract]
-    class Triangle : Shape, IShapeManipulator
+    class Triangle : Shape, IEditable
     {
         [DataMember]
-        PointF point1;
+        public PointF point1;
         [DataMember]
-        PointF point2;
+        public PointF point2;
         [DataMember]
-        PointF point3;
+        public PointF point3;
         public Triangle(float outline_width, Color color, PointF[] points)
         {
             this.color = color;
@@ -27,10 +27,18 @@ namespace MyPaint_FabricPattern
         }
         override public void Paint()
         {
-            MainForm.graphics.DrawLine(MainForm.painter.pen, this.point1, this.point2);
-            MainForm.graphics.DrawLine(MainForm.painter.pen, this.point2, this.point3);
-            MainForm.graphics.DrawLine(MainForm.painter.pen, this.point3, this.point1);
+            MainForm.graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2);
+            MainForm.graphics.DrawLine(new Pen(this.color, this.outline_width), this.point2, this.point3);
+            MainForm.graphics.DrawLine(new Pen(this.color, this.outline_width), this.point3, this.point1);
             MainForm.painter.LastShape = this;
+        }
+        public void ChangeOutlineWidth(float width)
+        {
+            this.outline_width = width;
+        }
+        public void ChangeColor(Color color)
+        {
+            this.color = color;
         }
     }
 }
