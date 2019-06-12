@@ -342,7 +342,7 @@ namespace MyPaint_FabricPattern
             try
             {
                 Serredo();
-
+               
             }
             catch
             {
@@ -1063,7 +1063,7 @@ namespace MyPaint_FabricPattern
             while (count != shape_list.Count)
             {
                 Shape shape = shape_list.ElementAt(count);
-                shape.Paint();
+                shape.Paint(MainForm.graphics);
                 
                 count++;
             }

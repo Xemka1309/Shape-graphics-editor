@@ -12,7 +12,7 @@ namespace MyPaint_FabricPattern
 {
     //[JsonObject]
     [DataContract]
-    class Rectangle : Shape, IEditable, IRepositable
+    class Rectangle : Shape, IRepositable
     {
        // [JsonProperty("upper_left_point")]
         [DataMember]
@@ -44,11 +44,11 @@ namespace MyPaint_FabricPattern
             //this.Paint();
         }
 
-        override public void Paint()
+        override public void Paint(Graphics graphics)
         {
             
-            MainForm.graphics.DrawRectangle(new Pen(this.color, this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
-            MainForm.painter.LastShape = this;
+            graphics.DrawRectangle(new Pen(this.color, this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
+            //MainForm.painter.LastShape = this;
         }
         public void ChangeOutlineWidth(float width)
         {

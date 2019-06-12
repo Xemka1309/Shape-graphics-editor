@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace MyPaint_FabricPattern
 {
     [DataContract]
-    class Triangle : Shape, IEditable
+    class Triangle : Shape
     {
         [DataMember]
         public PointF point1;
@@ -25,12 +25,12 @@ namespace MyPaint_FabricPattern
             this.point2 = points[1];
             this.point3 = points[2];
         }
-        override public void Paint()
+        override public void Paint(Graphics graphics)
         {
-            MainForm.graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2);
-            MainForm.graphics.DrawLine(new Pen(this.color, this.outline_width), this.point2, this.point3);
-            MainForm.graphics.DrawLine(new Pen(this.color, this.outline_width), this.point3, this.point1);
-            MainForm.painter.LastShape = this;
+            graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2);
+            graphics.DrawLine(new Pen(this.color, this.outline_width), this.point2, this.point3);
+            graphics.DrawLine(new Pen(this.color, this.outline_width), this.point3, this.point1);
+            //painter.LastShape = this;
         }
         public void ChangeOutlineWidth(float width)
         {

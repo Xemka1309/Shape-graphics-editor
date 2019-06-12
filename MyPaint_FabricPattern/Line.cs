@@ -11,7 +11,7 @@ namespace MyPaint_FabricPattern
 {
     //[JsonObject]
     [DataContract]
-    class Line : Shape, IEditable, IRepositable
+    class Line : Shape, IRepositable
     {
        // [JsonProperty("point1")]
         [DataMember]
@@ -26,10 +26,10 @@ namespace MyPaint_FabricPattern
             this.point1 = point1;
             this.point2 = point2;
         }
-        override public void Paint()
+        override public void Paint(Graphics graphics)
         {   
-            MainForm.graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2);
-            MainForm.painter.LastShape = this;
+            graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2);
+            //MainForm.painter.LastShape = this;
         }
         public void ChangeOutlineWidth(float width)
         {

@@ -22,7 +22,7 @@ namespace MyPaint_FabricPattern
         [DataMember]
         //[JsonProperty("outline_width")]
         public float outline_width;
-        public virtual void Paint() { }
+        public virtual void Paint(Graphics graphics) { }
         
         
 

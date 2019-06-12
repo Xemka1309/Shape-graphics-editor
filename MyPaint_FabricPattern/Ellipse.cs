@@ -36,10 +36,10 @@ namespace MyPaint_FabricPattern
             this.height = width;
             //this.Paint();
         }
-        override public void Paint()
+        override public void Paint(Graphics graphics)
         {
-            MainForm.graphics.DrawEllipse(new Pen(this.color,this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
-            MainForm.painter.LastShape = this;
+            graphics.DrawEllipse(new Pen(this.color,this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
+            //MainForm.painter.LastShape = this;
         }
         public void ChangeOutlineWidth(float width)
         {
@@ -54,7 +54,5 @@ namespace MyPaint_FabricPattern
             return upper_left_point;
 
         }
-
-
     }
 }

@@ -8,10 +8,11 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Windows.Forms;
 
 namespace MyPaint_FabricPattern
 {
-    
+
     class Serializator
     {
         DataContractJsonSerializerSettings settings;
@@ -19,10 +20,10 @@ namespace MyPaint_FabricPattern
         String typepass;
         DataContractJsonSerializer jsonFormatter;
         private static Serializator instance;
-        
+
         private Serializator()
         {
-           // List<Shape> list = new List<Shape>();
+            // List<Shape> list = new List<Shape>();
             //list.Add(new Rectangle(5,Colo))
             DataContractJsonSerializerSettings settingsbuff = new DataContractJsonSerializerSettings();
             List<Type> types = new List<Type>();
@@ -46,7 +47,7 @@ namespace MyPaint_FabricPattern
         public Type GetTypeFromString(String type_str)
         {
             Type type;
-            if (type_str == "Rectangle" )
+            if (type_str == "Rectangle")
             {
                 type = typeof(Rectangle);
             }
@@ -58,7 +59,7 @@ namespace MyPaint_FabricPattern
                 }
                 else
                 {
-                    if (type_str == "Ellipse" )
+                    if (type_str == "Ellipse")
                     {
                         type = typeof(Ellipse);
                     }
@@ -97,7 +98,7 @@ namespace MyPaint_FabricPattern
             }
             return type_str;
         }
-        public void Serialize_JSON(object obj,Type type)
+        public void Serialize_JSON(object obj, Type type)
         {
             jsonFormatter = new DataContractJsonSerializer(type);
             using (FileStream fs = new FileStream(filepass, FileMode.Append))
@@ -105,9 +106,9 @@ namespace MyPaint_FabricPattern
                 //jsonFormatter.KnownTypes
                 jsonFormatter.WriteObject(fs, obj);
             }
-            
+
         }
-       
+
         public void SetFilePass(String shapepass, String typespass, Boolean rewrite)
         {
             this.filepass = shapepass;
@@ -118,8 +119,8 @@ namespace MyPaint_FabricPattern
                 using (FileStream fs = new FileStream(typepass, FileMode.Create)) { }
             }
         }
-        
-        public void Serialize(List<Shape> list,String pass)
+
+        public void Serialize(List<Shape> list, String pass)
         {
             //File.Create("test/shapes.json");
             //DataContractJsonSerializerSettings settingsbuff = new DataContractJsonSerializerSettings();
@@ -128,30 +129,30 @@ namespace MyPaint_FabricPattern
             //{
             //    if (!types.Contains(list.ElementAt(i).GetType()))
             //    {
-             //       types.Add(list.ElementAt(i).GetType());
-             //   }
-           // }
+            //       types.Add(list.ElementAt(i).GetType());
+            //   }
+            // }
 
             //settingsbuff.KnownTypes = types;
-           // settingsbuff.SerializeReadOnlyTypes = true;
+            // settingsbuff.SerializeReadOnlyTypes = true;
             //this.settings = settingsbuff;
-            jsonFormatter = new DataContractJsonSerializer(list.GetType(),settings);
+            jsonFormatter = new DataContractJsonSerializer(list.GetType(), settings);
             using (FileStream fs = new FileStream(pass, FileMode.Create))
             {
-                jsonFormatter.WriteObject(fs,list);
+                jsonFormatter.WriteObject(fs, list);
             }
         }
         public List<Shape> Deserialize()
         {
-            List<Shape> list=new List<Shape>();
+            List<Shape> list = new List<Shape>();
             //File.Create("test/shapes.json");
             //settings.
             //EmitTypeInformation emitTypeInformation = new EmitTypeInformation();
-            jsonFormatter = new DataContractJsonSerializer(list.GetType(),settings);
+            jsonFormatter = new DataContractJsonSerializer(list.GetType(), settings);
             using (FileStream fs = new FileStream("test/shapes.json", FileMode.Open))
             {
                 //jsonFormatter.
-                list= (List<Shape>)jsonFormatter.ReadObject(fs);
+                list = (List<Shape>)jsonFormatter.ReadObject(fs);
             }
             return list;
         }
@@ -161,14 +162,14 @@ namespace MyPaint_FabricPattern
             JsonSerializerSettings jsettings = new JsonSerializerSettings();
 
             jsettings.TypeNameHandling = TypeNameHandling.All;
-            
+
             //String str=JsonConvert.SerializeObject(shape_list,shape_list.GetType(),jsettings);
             //str= JsonConvert.SerializeObject()
             //JsonConverterCollection jsonConverters = new JsonConverterCollection();
             // jsonConverters
             //JsonArrayAttribute jsonArrayAttribute = new JsonArrayAttribute();
             //JsonConvert.
-            using (StreamWriter sw=new StreamWriter("test/shapesdynamic.json"))
+            using (StreamWriter sw = new StreamWriter("test/shapesdynamic.json"))
             {
                 //for ( int i = 0; i < shape_list.Count; i++)
                 //{
@@ -190,7 +191,7 @@ namespace MyPaint_FabricPattern
 
             //jsonFormatter = new DataContractJsonSerializer(list.GetType(), settings);
             //TextReader textReader = new TextReader();
-            using (StreamReader sr=new StreamReader("test/shapes.json"))
+            using (StreamReader sr = new StreamReader("test/shapes.json"))
             {
                 String str = sr.ReadToEnd();
                 //JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
@@ -206,11 +207,11 @@ namespace MyPaint_FabricPattern
                 {
                     jArray.Add(jsonTextReader.Read());
                 }
-                
+
                 //jArray.Next.
-                
-               
-                
+
+
+
             }
             return list;
         }
@@ -243,21 +244,30 @@ namespace MyPaint_FabricPattern
             //settings.
             using (FileStream fs = new FileStream("test/shapes.json", FileMode.Create))
             {
-                
+
             }
         }
 
         public List<Shape> Desirialize_err(String pass)
         {
-            List<Shape> shapeList=new List<Shape>();       
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<Shape>),settings);
+            List<Shape> shapeList = new List<Shape>();
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<Shape>), settings);
             String textFromFile;
             using (FileStream fs = new FileStream(pass, FileMode.OpenOrCreate))
             {
                 byte[] array = new byte[fs.Length];
                 fs.Read(array, 0, array.Length);
                 textFromFile = Encoding.Default.GetString(array);
-                    
+
+            }
+            if (pass.IndexOf(".json") == -1)
+            {
+                MessageBox.Show("invalid file extension");
+                return shapeList;
+            }
+            if (textFromFile.IndexOf("{\"__type\"") == -1 || textFromFile.IndexOf("[{") == -1)
+            {
+                MessageBox.Show("invalid file");
             }
 
             textFromFile.Remove(0, 1);
