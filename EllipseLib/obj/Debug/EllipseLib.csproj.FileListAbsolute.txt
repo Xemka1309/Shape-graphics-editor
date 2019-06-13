@@ -1,0 +1,11 @@
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\bin\Debug\EllipseLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\bin\Debug\EllipseLib.pdb
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\obj\Debug\EllipseLib.csprojAssemblyReference.cache
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\obj\Debug\EllipseLib.csproj.CoreCompileInputs.cache
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\obj\Debug\EllipseLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\obj\Debug\EllipseLib.pdb
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\bin\Debug\ClassLibrary.dll
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\bin\Debug\ClassLibrary.pdb
+C:\Users\Макс\source\repos\OOP\OOP\EllipseLib\obj\Debug\EllipseLib.csproj.CopyComplete
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\EllipseLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\EllipseLib.pdb

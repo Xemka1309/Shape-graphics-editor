@@ -1,0 +1,11 @@
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\bin\Debug\LineLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\bin\Debug\LineLib.pdb
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\obj\Debug\LineLib.csprojAssemblyReference.cache
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\obj\Debug\LineLib.csproj.CoreCompileInputs.cache
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\obj\Debug\LineLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\obj\Debug\LineLib.pdb
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\bin\Debug\ClassLibrary.dll
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\bin\Debug\ClassLibrary.pdb
+C:\Users\Макс\source\repos\OOP\OOP\LineLib\obj\Debug\LineLib.csproj.CopyComplete
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\LineLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\LineLib.pdb

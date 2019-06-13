@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyPaint_FabricPattern
+namespace ClassLibrary
 {
-    interface IRepositable
+    public interface IRepositable
     {
         PointF getpospoint();
     }

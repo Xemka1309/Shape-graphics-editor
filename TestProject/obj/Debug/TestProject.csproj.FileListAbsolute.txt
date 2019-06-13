@@ -1,0 +1,7 @@
+C:\Users\Макс\source\repos\OOP\OOP\TestProject\bin\Debug\TestProject.exe.config
+C:\Users\Макс\source\repos\OOP\OOP\TestProject\bin\Debug\TestProject.exe
+C:\Users\Макс\source\repos\OOP\OOP\TestProject\bin\Debug\TestProject.pdb
+C:\Users\Макс\source\repos\OOP\OOP\TestProject\obj\Debug\TestProject.csprojAssemblyReference.cache
+C:\Users\Макс\source\repos\OOP\OOP\TestProject\obj\Debug\TestProject.csproj.CoreCompileInputs.cache
+C:\Users\Макс\source\repos\OOP\OOP\TestProject\obj\Debug\TestProject.exe
+C:\Users\Макс\source\repos\OOP\OOP\TestProject\obj\Debug\TestProject.pdb

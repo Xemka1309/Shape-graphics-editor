@@ -3,3 +3,6 @@ C:\Users\Макс\source\repos\OOP\OOP\ClassLibrary\bin\Debug\ClassLibrary.pdb
 C:\Users\Макс\source\repos\OOP\OOP\ClassLibrary\obj\Debug\ClassLibrary.csproj.CoreCompileInputs.cache
 C:\Users\Макс\source\repos\OOP\OOP\ClassLibrary\obj\Debug\ClassLibrary.dll
 C:\Users\Макс\source\repos\OOP\OOP\ClassLibrary\obj\Debug\ClassLibrary.pdb
+C:\Users\Макс\source\repos\OOP\OOP\ClassLibrary\obj\Debug\ClassLibrary.csprojAssemblyReference.cache
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\ClassLibrary.dll
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\ClassLibrary.pdb

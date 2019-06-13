@@ -1,4 +1,5 @@
 ﻿
+using ClassLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,9 @@ namespace MyPaint_FabricPattern
         static public int redoind;
         static public int buff;
 
+        static public List<Type> types;
+        static private List<IShapeDll> dlls;
+
         static public Bitmap picture;
         static public Bitmap buffpicture;
 
@@ -46,7 +50,7 @@ namespace MyPaint_FabricPattern
             InitializeComponent();
             colorDialog.Color = Color.Black;
 
-
+            
             shapestates = new LinkedList<List<Shape>>();
             shape_list = new List<Shape>();
             Line nullshape = new Line(0, Color.Navy, new PointF(), new PointF());
@@ -70,6 +74,7 @@ namespace MyPaint_FabricPattern
             prevmaps = new Bitmap[20];
             nextmaps = new Bitmap[20];
             redoind = 50;
+            LoadDlls();
             Serializator.getInstance().Serialize(shape_list, "BUFF/" + Convert.ToString(redoind) + ".json");
             redoind++;
 
@@ -84,7 +89,40 @@ namespace MyPaint_FabricPattern
             //prevgstate = nextgstate = graphics.Save();
 
         }
-
+        public void toolstripitemclick(object sender, ToolStripItemClickedEventArgs e)
+        {
+            painter.CurrentShapeToPaintID = e.ClickedItem.Text;
+        }
+        public void LoadDlls()
+        {
+            types = new List<Type>();
+            DllManager dllManager = new DllManager("DLLS");
+            dlls = dllManager.LoadAll(types);
+            toolStrip1.Items.Clear();
+            for (int i = 0; i < dlls.Count; i++)
+            {
+                //MessageBox.Show(types.ElementAt(i).Name);
+                switch (types.ElementAt(i).Name)
+                {
+                    case "Line":
+                        toolStrip1.Items.Add("Line", Image.FromFile("Resources//l.png"));
+                        toolStrip1.ItemClicked += new ToolStripItemClickedEventHandler(toolstripitemclick);
+                        break;
+                    case "Triangle":
+                        toolStrip1.Items.Add("Triangle",Image.FromFile("Resources//t.png"));
+                        break;
+                    case "Rectangle":
+                        toolStrip1.Items.Add("Rectangle", Image.FromFile("Resources//r.png"));
+                        toolStrip1.Items.Add("Square", Image.FromFile("Resources//s.png"));
+                        break;
+                    case "Ellipse":
+                        toolStrip1.Items.Add("Ellipse", Image.FromFile("Resources//e.png"));
+                        toolStrip1.Items.Add("Circuit", Image.FromFile("Resources//c.png"));
+                        break;
+                }
+                
+            }
+        }
         public void SetPictureBoxImage(Bitmap pic)
         {
             pictureBox.Image = pic;

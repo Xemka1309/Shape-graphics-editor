@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyPaint_FabricPattern
+namespace ClassLibrary
 {
-    interface IEditable
+    public interface IEditable
     {
          void ChangeColor(Color color);
          void ChangeOutlineWidth(float width);
-        //void ChangePlacement();
     }
 }

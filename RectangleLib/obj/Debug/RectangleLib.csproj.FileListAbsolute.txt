@@ -1,0 +1,11 @@
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\bin\Debug\RectangleLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\bin\Debug\RectangleLib.pdb
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\obj\Debug\RectangleLib.csprojAssemblyReference.cache
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\obj\Debug\RectangleLib.csproj.CoreCompileInputs.cache
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\obj\Debug\RectangleLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\obj\Debug\RectangleLib.pdb
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\bin\Debug\ClassLibrary.dll
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\bin\Debug\ClassLibrary.pdb
+C:\Users\Макс\source\repos\OOP\OOP\RectangleLib\obj\Debug\RectangleLib.csproj.CopyComplete
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\RectangleLib.dll
+C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\DLLS\RectangleLib.pdb

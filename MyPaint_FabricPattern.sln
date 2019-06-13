@@ -1,11 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPaint_FabricPattern", "MyPaint_FabricPattern\MyPaint_FabricPattern.csproj", "{3A776957-D9A1-40D9-89D5-147E5BF80A8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{FF8E8AA2-E1C9-4201-B8BA-4A2A305007FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{5317521E-1103-474C-9230-7957E120B02D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RectangleLib", "RectangleLib\RectangleLib.csproj", "{35F4AFA4-CFDE-4E66-9EAE-67BAD0FF4553}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriangleLib", "TriangleLib\TriangleLib.csproj", "{C22E4C5F-3448-474B-9095-B3E9CB57488D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseLib", "EllipseLib\EllipseLib.csproj", "{7F86A143-DC5C-4A56-AA22-8F178231B96F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineLib", "LineLib\LineLib.csproj", "{7C322978-6207-4B47-9EA3-1A320D0C9327}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +31,26 @@ Global
 		{FF8E8AA2-E1C9-4201-B8BA-4A2A305007FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF8E8AA2-E1C9-4201-B8BA-4A2A305007FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF8E8AA2-E1C9-4201-B8BA-4A2A305007FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5317521E-1103-474C-9230-7957E120B02D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5317521E-1103-474C-9230-7957E120B02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5317521E-1103-474C-9230-7957E120B02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5317521E-1103-474C-9230-7957E120B02D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35F4AFA4-CFDE-4E66-9EAE-67BAD0FF4553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35F4AFA4-CFDE-4E66-9EAE-67BAD0FF4553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35F4AFA4-CFDE-4E66-9EAE-67BAD0FF4553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35F4AFA4-CFDE-4E66-9EAE-67BAD0FF4553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C22E4C5F-3448-474B-9095-B3E9CB57488D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C22E4C5F-3448-474B-9095-B3E9CB57488D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C22E4C5F-3448-474B-9095-B3E9CB57488D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C22E4C5F-3448-474B-9095-B3E9CB57488D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F86A143-DC5C-4A56-AA22-8F178231B96F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F86A143-DC5C-4A56-AA22-8F178231B96F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F86A143-DC5C-4A56-AA22-8F178231B96F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F86A143-DC5C-4A56-AA22-8F178231B96F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C322978-6207-4B47-9EA3-1A320D0C9327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C322978-6207-4B47-9EA3-1A320D0C9327}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C322978-6207-4B47-9EA3-1A320D0C9327}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C322978-6207-4B47-9EA3-1A320D0C9327}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

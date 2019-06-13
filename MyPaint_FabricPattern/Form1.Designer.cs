@@ -282,7 +282,6 @@
             // 
             // toolStripTextBox1
             // 
-            this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox1.Name = "toolStripTextBox1";
             this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
             this.toolStripTextBox1.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged_1);
@@ -447,7 +446,6 @@
             // 
             // toolStripTextBoxWidth
             // 
-            this.toolStripTextBoxWidth.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBoxWidth.Name = "toolStripTextBoxWidth";
             this.toolStripTextBoxWidth.Size = new System.Drawing.Size(50, 39);
             this.toolStripTextBoxWidth.Text = "3";

@@ -8,23 +8,17 @@ using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
 
 
-namespace MyPaint_FabricPattern
+namespace ClassLibrary
 {
     [DataContract]
-   // [JsonObject]
     public abstract class Shape
     {
-        
-        //public PointF[] points;
         [DataMember]
-        //[JsonProperty("color")]
+
         public Color color;
         [DataMember]
-        //[JsonProperty("outline_width")]
         public float outline_width;
         public virtual void Paint(Graphics graphics) { }
-        
-        
 
     }
     
