@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ClassLibrary
 {
     [DataContract]
-    class Triangle : Shape, IShapeDll, IEditable
+    class Triangle : Shape, IShapeDll, IEditable,IThreePointsToPaint
     {
         [DataMember]
         public PointF point1;
@@ -28,6 +28,26 @@ namespace ClassLibrary
         public Triangle()
         {
 
+        }
+        public void SetPaintArgs(string[] args)
+        {
+           
+            this.point1.X = Convert.ToInt32(args[0]);
+            this.point1.Y = Convert.ToInt32(args[1]);
+            this.point2.X = Convert.ToInt32(args[2]);
+            this.point2.Y = Convert.ToInt32(args[3]);
+            this.point3.X = Convert.ToInt32(args[4]);
+            this.point3.Y = Convert.ToInt32(args[5]);
+        }
+        public override void SetFields(string[] args)
+        {
+            base.SetFields(args);
+            this.point1.X = Convert.ToInt32(args[0]);
+            this.point1.Y = Convert.ToInt32(args[1]);
+            this.point2.X = Convert.ToInt32(args[2]);
+            this.point2.Y = Convert.ToInt32(args[3]);
+            this.point3.X = Convert.ToInt32(args[4]);
+            this.point3.Y = Convert.ToInt32(args[5]);
         }
         override public void Paint(Graphics graphics)
         {

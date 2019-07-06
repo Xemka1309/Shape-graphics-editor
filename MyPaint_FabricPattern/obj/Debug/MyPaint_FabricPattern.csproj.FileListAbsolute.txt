@@ -22,4 +22,3 @@ C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\Newtonsof
 C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\obj\Debug\MyPaint_FabricPattern.csproj.CopyComplete
 C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\ClassLibrary.dll
-C:\Users\Макс\source\repos\OOP\OOP\MyPaint_FabricPattern\bin\Debug\ClassLibrary.pdb

@@ -19,7 +19,7 @@ namespace ClassLibrary
         [DataMember]
         public float outline_width;
         public virtual void Paint(Graphics graphics) { }
-
+        public virtual void SetFields(String[] args) { }
     }
     
 }

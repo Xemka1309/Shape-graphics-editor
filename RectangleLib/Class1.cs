@@ -10,7 +10,7 @@ namespace ClassLibrary
 {
     //[JsonObject]
     [DataContract]
-    class Rectangle : Shape, IRepositable, IShapeDll
+    class Rectangle : Shape, IRepositable, IShapeDll,ITwoPointsToPaint
     {
         // [JsonProperty("upper_left_point")]
         [DataMember]
@@ -31,6 +31,13 @@ namespace ClassLibrary
             this.height = height;
             //this.Paint();
         }
+        public void SetPaintArgs(string[] args)
+        {
+            this.upper_left_point.X = Convert.ToInt32(args[0]);
+            this.upper_left_point.Y = Convert.ToInt32(args[1]);
+            this.width = Convert.ToInt32(args[2]);
+            this.height = Convert.ToInt32(args[3]);
+        }
         // конструктор для квадрата
         public Rectangle(float outline_width, Color color, PointF upper_left_point, float width)
         {
@@ -45,7 +52,14 @@ namespace ClassLibrary
         {
 
         }
-
+        public override void SetFields(string[] args)
+        {
+            base.SetFields(args);
+            this.upper_left_point.X = Convert.ToInt32(args[0]);
+            this.upper_left_point.Y = Convert.ToInt32(args[1]);
+            this.width = Convert.ToInt32(args[2]);
+            this.height = Convert.ToInt32(args[3]);
+        }
         override public void Paint(Graphics graphics)
         {
 

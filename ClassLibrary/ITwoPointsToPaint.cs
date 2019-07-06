@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyPaint_FabricPattern
+namespace ClassLibrary
 {
-    interface IRepositable
+    public interface ITwoPointsToPaint
     {
-        PointF getpospoint();
+        void SetPaintArgs(string[] args);
+        
     }
 }

@@ -84,12 +84,10 @@
             this.label_shapes = new System.Windows.Forms.Label();
             this.labelstats = new System.Windows.Forms.Label();
             this.textBoxstatwidth = new System.Windows.Forms.TextBox();
-            this.textBoxstatsize = new System.Windows.Forms.TextBox();
             this.labelstatwidth = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonstatchangecolor = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonstatchangsize = new System.Windows.Forms.Button();
             this.buttonstatchangeoutlinewidth = new System.Windows.Forms.Button();
             this.buttonchangesizeposition = new System.Windows.Forms.Button();
             this.buttondeleteshape = new System.Windows.Forms.Button();
@@ -552,15 +550,6 @@
             this.textBoxstatwidth.TabIndex = 9;
             this.textBoxstatwidth.TextChanged += new System.EventHandler(this.textBoxstatwidth_TextChanged);
             // 
-            // textBoxstatsize
-            // 
-            this.textBoxstatsize.Enabled = false;
-            this.textBoxstatsize.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxstatsize.Location = new System.Drawing.Point(925, 189);
-            this.textBoxstatsize.Name = "textBoxstatsize";
-            this.textBoxstatsize.Size = new System.Drawing.Size(100, 27);
-            this.textBoxstatsize.TabIndex = 10;
-            // 
             // labelstatwidth
             // 
             this.labelstatwidth.AutoSize = true;
@@ -602,17 +591,6 @@
             this.label2.TabIndex = 14;
             this.label2.Text = "Color";
             this.label2.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // buttonstatchangsize
-            // 
-            this.buttonstatchangsize.Enabled = false;
-            this.buttonstatchangsize.Location = new System.Drawing.Point(1052, 189);
-            this.buttonstatchangsize.Name = "buttonstatchangsize";
-            this.buttonstatchangsize.Size = new System.Drawing.Size(34, 28);
-            this.buttonstatchangsize.TabIndex = 15;
-            this.buttonstatchangsize.Text = "OK";
-            this.buttonstatchangsize.UseVisualStyleBackColor = true;
-            this.buttonstatchangsize.Click += new System.EventHandler(this.buttonstatchangewidth_Click);
             // 
             // buttonstatchangeoutlinewidth
             // 
@@ -659,12 +637,10 @@
             this.Controls.Add(this.buttondeleteshape);
             this.Controls.Add(this.buttonchangesizeposition);
             this.Controls.Add(this.buttonstatchangeoutlinewidth);
-            this.Controls.Add(this.buttonstatchangsize);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonstatchangecolor);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelstatwidth);
-            this.Controls.Add(this.textBoxstatsize);
             this.Controls.Add(this.textBoxstatwidth);
             this.Controls.Add(this.labelstats);
             this.Controls.Add(this.label_shapes);
@@ -742,12 +718,10 @@
         public System.Windows.Forms.ListView listViewshapes;
         private System.Windows.Forms.Label labelstats;
         private System.Windows.Forms.TextBox textBoxstatwidth;
-        private System.Windows.Forms.TextBox textBoxstatsize;
         private System.Windows.Forms.Label labelstatwidth;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonstatchangecolor;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button buttonstatchangsize;
         private System.Windows.Forms.Button buttonstatchangeoutlinewidth;
         private System.Windows.Forms.Button buttonchangesizeposition;
         private System.Windows.Forms.Button buttondeleteshape;

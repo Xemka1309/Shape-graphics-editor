@@ -53,7 +53,7 @@ namespace MyPaint_FabricPattern
             
             shapestates = new LinkedList<List<Shape>>();
             shape_list = new List<Shape>();
-            Line nullshape = new Line(0, Color.Navy, new PointF(), new PointF());
+            NullShape nullshape = new NullShape();
             //shape_list.Add(nullshape);
 
             painter = new Painter();
@@ -119,6 +119,9 @@ namespace MyPaint_FabricPattern
                         toolStrip1.Items.Add("Ellipse", Image.FromFile("Resources//e.png"));
                         toolStrip1.Items.Add("Circuit", Image.FromFile("Resources//c.png"));
                         break;
+                    default:
+                        toolStrip1.Items.Add(types.ElementAt(i).Name);
+                        break;
                 }
                 
             }
@@ -176,7 +179,7 @@ namespace MyPaint_FabricPattern
             for (int i = 0; i < shape_list.Count; i++)
             {
                 Shape shape = shape_list.ElementAt(i);
-                String id = Serializator.getInstance().GetStringType(shape.GetType());
+                String id = shape.GetType().Name;
                 switch (id)
                 {
                     case "Triangle":
@@ -262,83 +265,13 @@ namespace MyPaint_FabricPattern
             {
                 editflag = false;
             }
-            /*
-            if (states.First() != nullmap)
-            {
-                editflag = true;
-                try
-                {
-                    shape_list = shapestates.First();
-                    prevmap = states.First();
-                    SaveNextGraphicsState();
-                    states.RemoveFirst();
-
-                    Graphics bgraphics = Graphics.FromImage(buffpicture);
-                    picture = new Bitmap(680, 400);
-                    Graphics graphics = Graphics.FromImage(picture);
-
-                    graphics.DrawImage(prevmap, 0, 0);
-
-                    graphics.DrawImage(prevmap, 0, 0);
-                    graphics.Restore(prevgstate);
-
-                    bgraphics.DrawImage(prevmap, 0, 0);
-
-                    pictureBox.Image = picture;
-                    editflag = false;
-
-                }
-                catch
-                {
-
-                    MessageBox.Show("No previous state saved");
-                }
-                finally
-                {
-                    //MessageBox.Show("Done");
-                }
-            }*/
+           
 
         }
 
         private void toolStripButtonRedo_Click(object sender, EventArgs e)
         {
-            /*if (states.Last() != nullmap)
-            {
-                editflag = true;
-                try
-                {
-                    shape_list = shapestates.Last();
-                    nextmap = states.Last();
-                    SavePrevGraphicsState();
-                    states.RemoveLast();
-
-                    Graphics bgraphics = Graphics.FromImage(buffpicture);
-                    picture = new Bitmap(680, 400);
-                    Graphics graphics = Graphics.FromImage(picture);
-
-                    graphics.DrawImage(nextmap, 0, 0);
-
-                    graphics.DrawImage(nextmap, 0, 0);
-                    graphics.Restore(prevgstate);
-
-                    bgraphics.DrawImage(nextmap, 0, 0);
-
-                    pictureBox.Image = picture;
-                    editflag = false;
-
-                }
-                catch
-                {
-
-                    MessageBox.Show("No previous state saved");
-                }
-                finally
-                {
-                    //MessageBox.Show("Done");
-                }
-            }
-            */
+           
             editflag = true;
             try
             {
@@ -463,26 +396,7 @@ namespace MyPaint_FabricPattern
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            /* if (e.Button == MouseButtons.Left)
-             {
-                  painter.points[painter.pointsset] = e.Location;
-                  painter.pointsset++;
-                  if (painter.pointsset >= 2)
-                  {
-                      painter.ShapeWidth = painter.points[0].X - painter.points[1].X;
-                      if (painter.ShapeWidth < 0)
-                      {
-                          painter.ShapeWidth *= -1;
-                         // painter.points[0].
-                      }
-
-                  }
-                  if (painter.pointsneed == painter.pointsset)
-                  {
-                      //painter.Create();
-                  }
-             }
-             */
+            
         }
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
@@ -541,8 +455,7 @@ namespace MyPaint_FabricPattern
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //SavePrevGraphicsState();
-            //shape_list = Serializator.getInstance().Deserialize();
+           
             openFileDialog1.ShowDialog();
             shape_list = Serializator.getInstance().Desirialize_err(openFileDialog1.FileName);
             painter.DrawShapeList(shape_list);
@@ -551,7 +464,7 @@ namespace MyPaint_FabricPattern
             SaveNextGraphicsState();
             PaintShapeList();
             painter.shape_was_select = false;
-            //MessageBox.Show(shape_list.Last().ToString());
+            
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -630,12 +543,9 @@ namespace MyPaint_FabricPattern
             try
             {
                 shape.ChangeOutlineWidth(Convert.ToInt32(textBoxstatwidth.Text));
-                //MessageBox.Show(painter.selected_shape.outline_width.ToString());
-                
                 painter.DrawShapeList(shape_list);
                 painter.SelectShape();
                 Refresh();
-               // MainForm.
             }
             catch
             {
@@ -669,7 +579,7 @@ namespace MyPaint_FabricPattern
             painter.shape_was_select = false;
             painter.selected_shape = null;
             painter.DrawShapeList(shape_list);
-            textBoxstatsize.Text = "noshape";
+            //textBoxstatsize.Text = "noshape";
             textBoxstatwidth.Text = "noshape";
             PaintShapeList();
             Refresh();
@@ -733,51 +643,52 @@ namespace MyPaint_FabricPattern
                 graphics = Graphics.FromImage(picture);
 
                 String id = painter.CurrentShapeToPaintID;
+                PointF p = new PointF();
+                p.X = painter.points[1].X + painter.ShapeWidth * 2;
+                p.Y = painter.points[1].Y;
                 switch (id)
                 {
                     case "Triangle":
-                        PointF p = new PointF();
-                        p.X = painter.points[1].X + painter.ShapeWidth * 2;
-                        p.Y = painter.points[1].Y;
+                        //PointF p = new PointF();
+                        //p.X = painter.points[1].X + painter.ShapeWidth * 2;
+                        //p.Y = painter.points[1].Y;
                         graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
                         graphics.DrawLine(painter.pen, painter.points[1], p);
                         graphics.DrawLine(painter.pen, p, painter.points[0]);
-                        shape_list.Add(painter.Create());
+                        shape_list.Add(painter.Create(dlls,types));
                         listViewshapes.Items.Add("Triangle",4);
                         break;
 
                     case "Rectangle":
                         graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
-                        shape_list.Add(painter.Create());
+                        shape_list.Add(painter.Create(dlls, types));
                         listViewshapes.Items.Add("Rectangle",3);
                         break;
                     case "Square":
                         graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
-                        shape_list.Add(painter.Create());
+                        shape_list.Add(painter.Create(dlls, types));
                         listViewshapes.Items.Add("Square",5);
                         break;
 
                     case "Line":
                         graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
-                        shape_list.Add(painter.Create());
+                        shape_list.Add(painter.Create(dlls, types));
                         listViewshapes.Items.Add("Line",2);
                         break;
 
                     case "Ellipse":
                         graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
-                        shape_list.Add(painter.Create());
+                        shape_list.Add(painter.Create(dlls, types));
                         listViewshapes.Items.Add("Ellipse", 1);
-                        //listViewshapes.Items.
                         break;
 
                     case "Circuit":
                         graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
-                        shape_list.Add(painter.Create());
+                        shape_list.Add(painter.Create(dlls, types));
                         listViewshapes.Items.Add("Circuit",0);
                         break;
 
                     case "Quadrilateral":
-                        //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
                         break;
                 }
                 states.AddLast(nullmap);
@@ -799,37 +710,37 @@ namespace MyPaint_FabricPattern
                             graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
                             graphics.DrawLine(painter.pen, painter.points[1], p);
                             graphics.DrawLine(painter.pen, p, painter.points[0]);
-                            shape_list.Insert(buff, painter.Create());
+                            shape_list.Insert(buff, painter.Create(dlls, types));
                             // listViewshapes.Items.Add("Triangle", 4);
                             break;
 
                         case "Rectangle":
                             graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
-                            shape_list.Insert(buff, painter.Create());
+                            shape_list.Insert(buff, painter.Create(dlls, types));
                             // listViewshapes.Items.Add("Rectangle", 3);
                             break;
                         case "Square":
                             graphics.DrawRectangle(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
-                            shape_list.Insert(buff, painter.Create());
+                            shape_list.Insert(buff, painter.Create(dlls, types));
                             // listViewshapes.Items.Add("Square", 5);
                             break;
 
                         case "Line":
                             graphics.DrawLine(painter.pen, painter.points[0], painter.points[1]);
-                            shape_list.Insert(buff, painter.Create());
+                            shape_list.Insert(buff, painter.Create(dlls, types));
                             // listViewshapes.Items.Add("Line", 2);
                             break;
 
                         case "Ellipse":
                             graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeHeight);
-                            shape_list.Insert(buff, painter.Create());
+                            shape_list.Insert(buff, painter.Create(dlls, types));
                             listViewshapes.Items.Add("Ellipse", 1);
                             //listViewshapes.Items.
                             break;
 
                         case "Circuit":
                             graphics.DrawEllipse(painter.pen, painter.points[0].X, painter.points[0].Y, painter.ShapeWidth, painter.ShapeWidth);
-                            shape_list.Insert(buff, painter.Create());
+                            shape_list.Insert(buff, painter.Create(dlls, types));
                             //listViewshapes.Items.Add("Circuit", 0);
                             break;
 
@@ -858,7 +769,13 @@ namespace MyPaint_FabricPattern
             painter.SetColor(colorDialog.Color);
         }
     }
+    class NullShape : Shape
+    {
+        public NullShape()
+        {
 
+        }
+    }
     public class Painter
     {
         public Shape selected_shape;
@@ -907,72 +824,74 @@ namespace MyPaint_FabricPattern
             float width, height;
             PointF upperleftpoint;
             Pen penbuff = new Pen(Color.Red,3);
-            String id = Serializator.getInstance().GetStringType(selected_shape.GetType());
+            //String id = Serializator.getInstance().GetStringType(selected_shape.GetType());
+            String id = selected_shape.GetType().Name;
             switch (id)
             {
                 case "Triangle":
-                Triangle triangle = selected_shape as Triangle;
-                upperleftpoint = new PointF(triangle.point2.X-20, triangle.point1.Y-20);
-                width = triangle.point3.X - triangle.point2.X + 40;
-                height = triangle.point2.Y - triangle.point1.Y + 40;
-                MainForm.graphics = Graphics.FromImage(MainForm.picture);
-                MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X,upperleftpoint.Y, width, height);
+                //triangle = selected_shape as Triangle;
+                
+                //upperleftpoint = new PointF(triangle.point2.X-20, triangle.point1.Y-20);
+                //width = triangle.point3.X - triangle.point2.X + 40;
+                //height = triangle.point2.Y - triangle.point1.Y + 40;
+                //MainForm.graphics = Graphics.FromImage(MainForm.picture);
+                //MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X,upperleftpoint.Y, width, height);
                 
                 
                 break;
 
                 case "Rectangle":
-                    Rectangle rectangle = selected_shape as Rectangle;
-                    upperleftpoint = new PointF();
-                    upperleftpoint.X = rectangle.upper_left_point.X - 20;
-                    upperleftpoint.Y = rectangle.upper_left_point.Y - 20;
-                    width = rectangle.width + 40;
-                    height = rectangle.height + 40;
-                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+                    //Rectangle rectangle = selected_shape as Rectangle;
+                    //upperleftpoint = new PointF();
+                    //upperleftpoint.X = rectangle.upper_left_point.X - 20;
+                    //upperleftpoint.Y = rectangle.upper_left_point.Y - 20;
+                    //width = rectangle.width + 40;
+                   // height = rectangle.height + 40;
+                    //MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
                     //MainForm.graphics.DrawLine(penbuff,0, 0, 20, 20);
                     break;
                 case "Square":
-                    Rectangle square = selected_shape as Rectangle;
-                    upperleftpoint = new PointF();
-                    upperleftpoint.X = square.upper_left_point.X - 20;
-                    upperleftpoint.Y = square.upper_left_point.Y - 20;
-                    width = square.width + 40;
-                    height = square.height + 40;
-                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+                   // Rectangle square = selected_shape as Rectangle;
+                    //upperleftpoint = new PointF();
+                    //upperleftpoint.X = square.upper_left_point.X - 20;
+                    //upperleftpoint.Y = square.upper_left_point.Y - 20;
+                    //width = square.width + 40;
+                    //height = square.height + 40;
+                    //MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
 
                     break;
 
                 case "Line":
-                    Line line = selected_shape as Line;
-                    upperleftpoint = new PointF();
-                    upperleftpoint.X = line.point1.X - 20;
-                    upperleftpoint.Y = line.point1.Y - 20;
-                    width = line.point2.X-line.point1.X+40;
-                    height = line.point2.Y-line.point1.Y + 40;
-                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+                    //Line line = selected_shape as Line;
+                    //upperleftpoint = new PointF();
+                    //upperleftpoint.X = line.point1.X - 20;
+                    //upperleftpoint.Y = line.point1.Y - 20;
+                    //width = line.point2.X-line.point1.X+40;
+                    //height = line.point2.Y-line.point1.Y + 40;
+                    //MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
 
 
                     break;
 
                 case "Ellipse":
-                    Ellipse ellipse= selected_shape as Ellipse;
-                    upperleftpoint = new PointF();
-                    upperleftpoint.X = ellipse.upper_left_point.X - 20;
-                    upperleftpoint.Y = ellipse.upper_left_point.Y - 20;
-                    width = ellipse.width + 40;
-                    height = ellipse.height + 40;
-                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+                    //Ellipse ellipse= selected_shape as Ellipse;
+                    // upperleftpoint = new PointF();
+                    //upperleftpoint.X = ellipse.upper_left_point.X - 20;
+                    //upperleftpoint.Y = ellipse.upper_left_point.Y - 20;
+                    //width = ellipse.width + 40;
+                    //height = ellipse.height + 40;
+                    //MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
 
                     break;
 
                 case "Circuit":
-                    Ellipse circuit = selected_shape as Ellipse;
-                    upperleftpoint = new PointF();
-                    upperleftpoint.X = circuit.upper_left_point.X - 20;
-                    upperleftpoint.Y = circuit.upper_left_point.Y - 20;
-                    width = circuit.width + 40;
-                    height = circuit.height + 40;
-                    MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
+                    //Ellipse circuit = selected_shape as Ellipse;
+                    //upperleftpoint = new PointF();
+                    //upperleftpoint.X = circuit.upper_left_point.X - 20;
+                    //upperleftpoint.Y = circuit.upper_left_point.Y - 20;
+                    //width = circuit.width + 40;
+                    //height = circuit.height + 40;
+                    //MainForm.graphics.DrawRectangle(penbuff, upperleftpoint.X, upperleftpoint.Y, width, height);
 
                     break;
 
@@ -990,9 +909,7 @@ namespace MyPaint_FabricPattern
             ShapeHeight = points[1].Y - points[0].Y;
             if (points[0].X > points[1].X)
             {
-                //PointF buff = points[0];
-                //points[0] = points[1];
-                //points[1] = buff;
+                
                 ShapeWidth = points[0].X - points[1].X;
             }
             else
@@ -1003,9 +920,7 @@ namespace MyPaint_FabricPattern
             if (points[1].Y > points[0].Y)
             {
                 ShapeHeight = points[1].Y - points[0].Y;
-                //float buff = points[0].Y;
-                //points[0].Y = points[1].Y;
-                //points[1].Y = buff;
+                
             }
             else
             {
@@ -1046,37 +961,62 @@ namespace MyPaint_FabricPattern
            
             //return LastShape;
         }
-        public Shape Create()
+        public Shape Create(List<IShapeDll> dlls, List<Type> types)
         {
             Serializator.getInstance().Serialize(MainForm.shape_list, "BUFF/" + Convert.ToString(MainForm.redoind) + ".json");
             MainForm.redoind++;
             String id = CurrentShapeToPaintID;
-            switch (id)
+            String[] args = new String[6];
+            for (int i = 0; i < types.Count; i++)
             {
-                case "Triangle":
-                    points[2].X = points[1].X + ShapeWidth * 2;
-                    points[2].Y = points[1].Y;
-                    LastShape = new Triangle(pen.Width, pen.Color, points);
+                if (types.ElementAt(i).Name.Contains(id))
+                {
+                    LastShape = dlls[i].GetShape();
+                    var buff = LastShape as IShapeDll;
+                    if (buff == null)
+                        return new NullShape();
+                    else
+                    {
+                        buff.SetColor(pen.Color);
+                        buff.SetWidth(pen.Width);
+                    }
+                    var shapebuff = LastShape as ITwoPointsToPaint;
+                    if (shapebuff == null)
+                    {
+                        var shapebuff3p = LastShape as IThreePointsToPaint;
+                        if (shapebuff3p == null)
+                        {
+                            return new NullShape();
+                        }
+                        else
+                        {
+                            points[2].X = points[1].X + ShapeWidth * 2;
+                            points[2].Y = points[1].Y;
+                            args[0] = Convert.ToString(points[0].X);
+                            args[1] = Convert.ToString(points[0].Y);
+                            args[2] = Convert.ToString(points[1].X);
+                            args[3] = Convert.ToString(points[1].Y);
+                            args[4] = Convert.ToString(points[2].X);
+                            args[5] = Convert.ToString(points[2].Y);
+                            shapebuff3p.SetPaintArgs(args);
+                        }
+                    }
+                    else
+                    {
+                        int x = (int)points[0].X;
+                        int y = (int)points[0].Y;
+                        args[0] = Convert.ToString(x);
+                        args[1] = Convert.ToString(y);
+                        args[2] = Convert.ToString(ShapeWidth);
+                        args[3] = Convert.ToString(ShapeHeight);
+                        shapebuff.SetPaintArgs(args);
+                    }
                     break;
-                case "Rectangle":
-                    LastShape = new Rectangle(pen.Width, pen.Color, points[0], ShapeWidth, ShapeHeight);
-                    break;
-                case "Square":
-                    LastShape = new Rectangle(pen.Width, pen.Color, points[0], ShapeWidth);
-                    break;
-                case "Line":
-                    LastShape = new Line(pen.Width, pen.Color, points[0], points[1]);
-                    break;
-                case "Ellipse":
-                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth, ShapeHeight);
-                    break;
-                case "Circuit":
-                    LastShape = new Ellipse(pen.Width, pen.Color, points[0], ShapeWidth);
-                    break;
-                case "Quadrilateral":
-                    //LastShape = new Quadrilateral(pen.Width, pen.Color, points);
-                    break;
+                    
+                }
+
             }
+            LastShape.Paint(MainForm.graphics);
             return LastShape;
 
         }
@@ -1106,19 +1046,6 @@ namespace MyPaint_FabricPattern
                 count++;
             }
             
-            //MainForm.PaintShapeList();
-
-           // graphics.DrawImage(MainForm.prevmap, 0, 0);
-
-            //graphics.DrawImage(MainForm.prevmap, 0, 0);
-            //graphics.Restore(MainForm.prevgstate);
-
-            //bgraphics.DrawImage(MainForm.prevmap, 0, 0);
-
-            //MainForm.SetPictureBoxImage(MainForm.picture);
-            //MainForm.editflag = false;
-            //MainForm.picture = new Bitmap(680, 400);
-
 
         }
 

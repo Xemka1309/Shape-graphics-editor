@@ -25,9 +25,12 @@ namespace MyPaint_FabricPattern
             int i = 0;
             foreach (var dir in dirs)
             {
-                //Console.Write(" " + dir);
-                assemblies[i] = Assembly.LoadFile(currentdir + "\\" + dir);
-                i++;
+                if (dir.Contains(".dll"))
+                {
+                    assemblies[i] = Assembly.LoadFile(currentdir + "\\" + dir);
+                    i++;
+                }
+                
             }
             List<IShapeDll> dlls = new List<IShapeDll>();
             //types = new List<Type>();
@@ -38,7 +41,10 @@ namespace MyPaint_FabricPattern
                 {
                     if ((types.IndexOf(assemblyTypes[j]) == -1) && (assemblyTypes[j].ToString().StartsWith("ClassLibrary")) && (!assemblyTypes[j].ToString().Contains("I")) && (!assemblyTypes[j].ToString().Contains("Shape")))
                     {
+                        var obj=assemblies[i].CreateInstance(assemblyTypes[j].FullName);
+                        
                         var shape=(IShapeDll)(assemblies[i].CreateInstance(assemblyTypes[j].FullName));
+                        
                         if ( shape != null)
                         {
                             types.Add(assemblyTypes[j]);

@@ -10,7 +10,7 @@ namespace ClassLibrary
 {
     //[JsonObject]
     [DataContract]
-    class Line : Shape, IRepositable,IShapeDll
+    class Line : Shape, IRepositable,IShapeDll,IThreePointsToPaint
     {
         // [JsonProperty("point1")]
         [DataMember]
@@ -28,6 +28,22 @@ namespace ClassLibrary
         public Line()
         {
 
+        }
+        public void SetPaintArgs(string[] args)
+        {
+            this.point1.X = Convert.ToInt32(args[0]);
+            this.point1.Y = Convert.ToInt32(args[1]);
+            this.point2.X = Convert.ToInt32(args[2]);
+            this.point2.Y = Convert.ToInt32(args[3]);
+            //this.height = Convert.ToInt32(args[3]);
+        }
+        public override void SetFields(string[] args)
+        {
+            base.SetFields(args);
+            this.point1.X = Convert.ToInt32(args[0]);
+            this.point1.Y = Convert.ToInt32(args[1]);
+            this.point2.X = Convert.ToInt32(args[2]);
+            this.point2.Y = Convert.ToInt32(args[3]);
         }
         override public void Paint(Graphics graphics)
         {

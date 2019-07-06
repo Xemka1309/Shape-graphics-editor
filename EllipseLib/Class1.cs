@@ -11,7 +11,7 @@ using ClassLibrary;
 namespace ClassLibrary
 {
     [DataContract]
-    class Ellipse : Shape, IEditable, IRepositable, IShapeDll
+    class Ellipse : Shape, IEditable, IRepositable, IShapeDll,ITwoPointsToPaint 
     {
         [DataMember]
         public PointF upper_left_point;
@@ -47,6 +47,21 @@ namespace ClassLibrary
             graphics.DrawEllipse(new Pen(this.color, this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
             //MainForm.painter.LastShape = this;
         }
+        public void SetPaintArgs(string[] args)
+        {
+            this.upper_left_point.X = Convert.ToInt32(args[0]);
+            this.upper_left_point.Y = Convert.ToInt32(args[1]);
+            this.width = Convert.ToInt32(args[2]);
+            this.height = Convert.ToInt32(args[3]);
+        }
+        public override void SetFields(string[] args)
+        {
+            base.SetFields(args);
+            this.upper_left_point.X = Convert.ToInt32(args[0]);
+            this.upper_left_point.Y = Convert.ToInt32(args[1]);
+            this.width = Convert.ToInt32(args[2]);
+            this.height = Convert.ToInt32(args[3]);
+        }
         public void ChangeOutlineWidth(float width)
         {
             this.outline_width = width;
@@ -72,5 +87,6 @@ namespace ClassLibrary
         {
             return new Ellipse();
         }
+        
     }
 }
