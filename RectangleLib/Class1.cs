@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Runtime.Serialization;
 
 namespace ClassLibrary
 {
-    //[JsonObject]
     [DataContract]
-    class Rectangle : Shape, IRepositable, IShapeDll,ITwoPointsToPaint
+    class Rectangle : Shape, IRepositable, IShapeDll,ITwoPointsToPaint, IEditable
     {
-        // [JsonProperty("upper_left_point")]
         [DataMember]
         public PointF upper_left_point;
-        //[JsonProperty("width")]
         [DataMember]
         public float width;
-        //[JsonProperty("height")]
         [DataMember]
         public float height;
 
@@ -29,7 +21,6 @@ namespace ClassLibrary
             this.upper_left_point = upper_left_point;
             this.width = width;
             this.height = height;
-            //this.Paint();
         }
         public void SetPaintArgs(string[] args)
         {
@@ -46,7 +37,6 @@ namespace ClassLibrary
             this.upper_left_point = upper_left_point;
             this.width = width;
             this.height = width;
-            //this.Paint();
         }
         public Rectangle()
         {
@@ -62,9 +52,7 @@ namespace ClassLibrary
         }
         override public void Paint(Graphics graphics)
         {
-
             graphics.DrawRectangle(new Pen(this.color, this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
-            //MainForm.painter.LastShape = this;
         }
         public void ChangeOutlineWidth(float width)
         {

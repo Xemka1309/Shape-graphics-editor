@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
@@ -54,7 +50,6 @@ namespace ClassLibrary
             graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2);
             graphics.DrawLine(new Pen(this.color, this.outline_width), this.point2, this.point3);
             graphics.DrawLine(new Pen(this.color, this.outline_width), this.point3, this.point1);
-            //painter.LastShape = this;
         }
         public void ChangeOutlineWidth(float width)
         {

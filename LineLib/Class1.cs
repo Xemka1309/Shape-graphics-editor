@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ClassLibrary
 {
-    //[JsonObject]
     [DataContract]
-    class Line : Shape, IRepositable,IShapeDll,IThreePointsToPaint
+    class Line : Shape, IRepositable,IShapeDll,IThreePointsToPaint, IEditable
     {
-        // [JsonProperty("point1")]
         [DataMember]
         public PointF point1;
-        //[JsonProperty("point2")]
         [DataMember]
         public PointF point2;
         public Line(float outline_width, Color color, PointF point1, PointF point2)
@@ -35,7 +27,6 @@ namespace ClassLibrary
             this.point1.Y = Convert.ToInt32(args[1]);
             this.point2.X = Convert.ToInt32(args[2]);
             this.point2.Y = Convert.ToInt32(args[3]);
-            //this.height = Convert.ToInt32(args[3]);
         }
         public override void SetFields(string[] args)
         {
@@ -47,8 +38,7 @@ namespace ClassLibrary
         }
         override public void Paint(Graphics graphics)
         {
-            graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2);
-            //MainForm.painter.LastShape = this;
+            graphics.DrawLine(new Pen(this.color, this.outline_width), this.point1, this.point2); 
         }
         public void ChangeOutlineWidth(float width)
         {

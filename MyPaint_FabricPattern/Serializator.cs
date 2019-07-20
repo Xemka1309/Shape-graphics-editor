@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using Newtonsoft.Json;
@@ -37,33 +34,7 @@ namespace MyPaint_FabricPattern
                 instance = new Serializator(MainForm.types);
             return instance;
         }
-        public Type GetTypeFromString(String type_str)
-        {
-            Type type;
-            if (type_str == "Rectangle")
-            {
-                //type = typeof(Rectangle);
-            }
-            else
-            {
-                if (type_str == "Triangle")
-                {
-                    //type = typeof(Triangle);
-                }
-                else
-                {
-                    if (type_str == "Ellipse")
-                    {
-                       
-                    }
-                    else
-                    {
-                        
-                    }
-                }
-            }
-            return "".GetType();
-        }
+        
         public String GetStringType(Type type)
         {
             String type_str;

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using ClassLibrary;
 
 
 namespace ClassLibrary
@@ -26,7 +21,6 @@ namespace ClassLibrary
             this.upper_left_point = upper_left_point;
             this.width = width;
             this.height = height;
-            //this.Paint();
         }
         // конструктор для окружности
         public Ellipse(float outline_width, Color color, PointF upper_left_point, float width)
@@ -45,7 +39,6 @@ namespace ClassLibrary
         override public void Paint(Graphics graphics)
         {
             graphics.DrawEllipse(new Pen(this.color, this.outline_width), upper_left_point.X, upper_left_point.Y, width, height);
-            //MainForm.painter.LastShape = this;
         }
         public void SetPaintArgs(string[] args)
         {
